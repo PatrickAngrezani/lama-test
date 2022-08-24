@@ -30,26 +30,13 @@ export class UserService {
   // //update
   async update(id: string, updatedUserDto: UpdateUserDto): Promise<User> {
     const updatedUser = await this.repository.findOne({
-      where: { id }
+      where: { id },
     });
-    
     return this.repository.save({
       ...updatedUser,
-      ...updatedUserDto
-    })
+      ...updatedUserDto,
+    });
   }
-
-
-    // async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    //   const user = await this.repository.preload({
-    //     id: id,
-    //     ...updateUserDto,
-    //   });
-    //   if (!user) {
-    //     throw new NotFoundException(`Item ${id} not found`);
-    //   }
-    //   return this.repository.save(user);
-    // }
 
   //removeAll
   async removeAll() {

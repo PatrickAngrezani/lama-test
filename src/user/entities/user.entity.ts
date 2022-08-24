@@ -3,9 +3,8 @@ import {
   Column,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
-  Entity
+  Entity,
 } from 'typeorm';
-
 
 @Entity()
 export class User extends BaseEntity {
@@ -43,4 +42,12 @@ export class User extends BaseEntity {
     nullable: true,
   })
   phone: string;
+
+  contructor(user?:Partial<User>) {
+    this.id = user?.id;
+    this.updatedAt = user?.updatedAt;
+    this.user = user?.user;
+    this.email = user?.email;
+    this.phone = user?.phone;
+  }
 }

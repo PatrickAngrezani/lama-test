@@ -8,7 +8,7 @@ import { User } from './entities/user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(User) public readonly repository: Repository<User>,
+    @InjectRepository(User) private readonly repository: Repository<User>,
   ) {}
 
   //create
@@ -17,27 +17,39 @@ export class UserService {
     return this.repository.save(user);
   }
 
-  //findall
+  //findAll
   findAll(): Promise<User[]> {
     return this.repository.find();
   }
 
-  //findone
+  //findOne
   findOne(id: string): Promise<User> {
     return this.repository.findOne({ where: { id } });
   }
 
-  //update
-  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
-    const user = await this.repository.preload({
-      id: id,
-      ...updateUserDto,
+  // //update
+  async update(id: string, updatedUserDto: UpdateUserDto): Promise<User> {
+    const updatedUser = await this.repository.findOne({
+      where: { id }
     });
-    if (!user) {
-      throw new NotFoundException(`User ${id} not found`);
-    }
-    return this.repository.save(user);
+    
+    return this.repository.save({
+      ...updatedUser,
+      ...updatedUserDto
+    })
   }
+
+
+    // async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    //   const user = await this.repository.preload({
+    //     id: id,
+    //     ...updateUserDto,
+    //   });
+    //   if (!user) {
+    //     throw new NotFoundException(`Item ${id} not found`);
+    //   }
+    //   return this.repository.save(user);
+    // }
 
   //removeAll
   async removeAll() {
@@ -45,7 +57,7 @@ export class UserService {
     return this.repository.remove(users);
   }
 
-  //removeId
+  //removeOne
   async remove(id: string) {
     const user = await this.findOne(id);
     return this.repository.remove(user);

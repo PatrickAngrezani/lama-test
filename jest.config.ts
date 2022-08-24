@@ -5,7 +5,7 @@
 
 export default {
   // All imported modules in your tests should be mocked automatically
-  automock: true,
+  // automock: true,
 
   // Stop running tests after `n` failures
   // bail: 0,
@@ -186,4 +186,11 @@ export default {
 
   // Whether to use watchman for file crawling
   // watchman: true,
+
+  unmockedModulePathPatterns: [
+    "<rootDir>/node_modules/react",
+    "<rootDir>/node_modules/react-dom",
+    "<rootDir>/node_modules/react-addons-test-utils",
+    "<rootDir>/node_modules/fbjs"
+  ]
 };

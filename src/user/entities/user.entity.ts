@@ -1,5 +1,4 @@
 import {
-  BaseEntity,
   Column,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
@@ -7,7 +6,7 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class User extends BaseEntity {
+export class UserEntity {
   @PrimaryGeneratedColumn()
   id: string;
 
@@ -43,11 +42,11 @@ export class User extends BaseEntity {
   })
   phone: string;
 
-  contructor(user?:Partial<User>) {
-    this.id = user?.id;
-    this.updatedAt = user?.updatedAt;
-    this.user = user?.user;
-    this.email = user?.email;
-    this.phone = user?.phone;
+  contructor(user:Partial<UserEntity>) {
+    this.id = user.id;
+    this.updatedAt = user.updatedAt;
+    this.user = user.user;
+    this.email = user.email;
+    this.phone = user.phone;
   }
 }

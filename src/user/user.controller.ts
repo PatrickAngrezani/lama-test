@@ -1,4 +1,3 @@
-import { User } from 'src/user/entities/user.entity';
 import {
   Controller,
   Get,

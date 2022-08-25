@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import {
   Column,
   PrimaryGeneratedColumn,
@@ -17,6 +18,7 @@ export class UserEntity {
   })
   updatedAt: Date;
 
+  @ApiProperty()
   @Column({
     name: 'user',
     type: 'varchar',
@@ -26,6 +28,7 @@ export class UserEntity {
   })
   user: string;
 
+  @ApiProperty()
   @Column({
     name: 'email',
     type: 'varchar',
@@ -35,6 +38,7 @@ export class UserEntity {
   })
   email: string;
 
+  @ApiProperty()
   @Column({
     name: 'phone',
     type: 'varchar',

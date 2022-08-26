@@ -1,9 +1,9 @@
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserService } from './user.service';
-import { Test, TestingModule } from '@nestjs/testing';
-import { UserController } from './user.controller';
-import { UserEntity } from './entities/user.entity';
+import {UpdateUserDto} from './dto/update-user.dto';
+import {CreateUserDto} from './dto/create-user.dto';
+import {UserService} from './user.service';
+import {Test, TestingModule} from '@nestjs/testing';
+import {UserController} from './user.controller';
+import {UserEntity} from './entities/user.entity';
 
 //const[] (mock)
 const userEntityList: UserEntity[] = [
@@ -141,9 +141,7 @@ describe('userController', () => {
               email: 'mocktest@gmail.com',
               phone: '5551985647070',
             };
-            jest
-              .spyOn(userService, 'update')
-              .mockRejectedValueOnce(new Error());
+            jest.spyOn(userService, 'update').mockRejectedValueOnce(new Error());
             //assert
             expect(userController.update('id', body)).rejects.toThrowError();
           });
@@ -162,9 +160,7 @@ describe('userController', () => {
           //removeAll(exception)
           it('should throw an exception', () => {
             //arrange
-            jest
-              .spyOn(userService, 'removeAll')
-              .mockRejectedValueOnce(new Error());
+            jest.spyOn(userService, 'removeAll').mockRejectedValueOnce(new Error());
             //assert
             expect(userController.removeAll()).rejects.toThrowError();
           });
@@ -181,9 +177,7 @@ describe('userController', () => {
           });
           it('should throw an exception', () => {
             //arrange
-            jest
-              .spyOn(userService, 'remove')
-              .mockRejectedValueOnce(new Error());
+            jest.spyOn(userService, 'remove').mockRejectedValueOnce(new Error());
             //assert
             expect(userController.remove('id')).rejects.toThrowError();
           });

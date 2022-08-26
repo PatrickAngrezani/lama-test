@@ -1,10 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
-import {
-  Column,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-  Entity,
-} from 'typeorm';
+import {ApiProperty} from '@nestjs/swagger';
+import {Column, PrimaryGeneratedColumn, UpdateDateColumn, Entity} from 'typeorm';
 
 @Entity()
 export class UserEntity {
@@ -46,7 +41,7 @@ export class UserEntity {
   })
   phone: string;
 
-  contructor(user:Partial<UserEntity>) {
+  contructor(user: Partial<UserEntity>) {
     this.id = user.id;
     this.updatedAt = user.updatedAt;
     this.user = user.user;

@@ -1,10 +1,10 @@
-import { CreateUserDto } from './dto/create-user.dto';
-import { UserEntity } from './entities/user.entity';
-import { Test, TestingModule } from '@nestjs/testing';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { UserService } from './user.service';
-import { Repository } from 'typeorm';
-import { UpdateUserDto } from './dto/update-user.dto';
+import {CreateUserDto} from './dto/create-user.dto';
+import {UserEntity} from './entities/user.entity';
+import {Test, TestingModule} from '@nestjs/testing';
+import {getRepositoryToken} from '@nestjs/typeorm';
+import {UserService} from './user.service';
+import {Repository} from 'typeorm';
+import {UpdateUserDto} from './dto/update-user.dto';
 
 //const[] (mock)
 const newUserEntity = new UserEntity();
@@ -42,9 +42,7 @@ describe('userService', () => {
     }).compile();
 
     userService = module.get<UserService>(UserService);
-    userRepository = module.get<Repository<UserEntity>>(
-      getRepositoryToken(UserEntity),
-    );
+    userRepository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity));
   });
 
   //defined
@@ -153,40 +151,38 @@ describe('userService', () => {
   });
 
   //removeAll
-  describe('removeAll', ()=>{
-    it('should remove all users', async()=>{
+  describe('removeAll', () => {
+    it('should remove all users', async () => {
       //act
       const result = await userService.removeAll();
       //assert
       expect(result).toBe(removedUserEntity);
-      expect(userRepository.remove).toHaveBeenCalledTimes(1)
-    })
+      expect(userRepository.remove).toHaveBeenCalledTimes(1);
+    });
 
-    it('should throw an exception', ()=>{
+    it('should throw an exception', () => {
       //arrange
       jest.spyOn(userRepository, 'remove').mockRejectedValueOnce(new Error());
       //assert
       expect(userService.removeAll()).rejects.toThrowError();
-    } )
-  })
-
+    });
+  });
 
   //remove
-  describe('remove', ()=>{
-    it('remove just an user', async ()=>{
+  describe('remove', () => {
+    it('remove just an user', async () => {
       //act
       const result = await userService.remove('id');
       //assert
       expect(result).toBe(removedUserEntity);
       expect(userRepository.remove).toHaveBeenCalledTimes(1);
-    })
-  })
+    });
+  });
 
-  it('should throw an exception', ()=>{
+  it('should throw an exception', () => {
     //arrange
     jest.spyOn(userRepository, 'remove').mockRejectedValueOnce(new Error());
     //assert
     expect(userService.remove('id')).rejects.toThrowError();
-  })
-
+  });
 });

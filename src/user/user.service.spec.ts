@@ -56,9 +56,9 @@ describe('userService', () => {
     it('should create a new user', async () => {
       //arrange
       const body: CreateUserDto = {
-        user: 'teste',
-        email: 'teste@email.com',
-        phone: '5551980327070',
+        User: 'teste',
+        Email: 'teste@email.com',
+        Phone: '5551980327070',
       };
       //act
       const result = await userService.create(body);
@@ -72,9 +72,9 @@ describe('userService', () => {
     it('should throw an exception', () => {
       //arrange
       const body: CreateUserDto = {
-        user: 'teste',
-        email: 'teste@email.com',
-        phone: '5551980327070',
+        User: 'teste',
+        Email: 'teste@email.com',
+        Phone: '5551980327070',
       };
       jest.spyOn(userRepository, 'save').mockRejectedValueOnce(new Error());
       //assert
@@ -125,9 +125,9 @@ describe('userService', () => {
     it('should update an user', async () => {
       //arrange
       const body: UpdateUserDto = {
-        user: 'mockTest',
-        email: 'mocktest@gmail.com',
-        phone: '5551985647070',
+        User: 'mockTest',
+        Email: 'mocktest@gmail.com',
+        Phone: '5551985647070',
       };
       //act
       const result = await userService.update('id', body);
@@ -140,9 +140,9 @@ describe('userService', () => {
     it('should throw an exception', () => {
       //arrange
       const body: UpdateUserDto = {
-        user: 'mockTest',
-        email: 'mocktest@gmail.com',
-        phone: '5551985647070',
+        User: 'mockTest',
+        Email: 'mocktest@gmail.com',
+        Phone: '5551985647070',
       };
       jest.spyOn(userRepository, 'findOne').mockRejectedValueOnce(new Error());
       //assert

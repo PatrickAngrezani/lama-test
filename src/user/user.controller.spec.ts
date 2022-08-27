@@ -72,9 +72,9 @@ describe('userController', () => {
       it('should create a new user succesfully', async () => {
         //arrange
         const body: CreateUserDto = {
-          user: 'teste',
-          email: 'teste@gmail.com',
-          phone: '5551998707070',
+          User: 'teste',
+          Email: 'teste@gmail.com',
+          Phone: '5551998707070',
         };
 
         //act
@@ -90,9 +90,9 @@ describe('userController', () => {
       it('should throw an exception', () => {
         //arrange
         const body: CreateUserDto = {
-          user: 'teste',
-          email: 'teste@gmail.com',
-          phone: '5551998707070',
+          User: 'teste',
+          Email: 'teste@gmail.com',
+          Phone: '5551998707070',
         };
         jest.spyOn(userService, 'create').mockRejectedValueOnce(new Error());
         //assert
@@ -122,9 +122,9 @@ describe('userController', () => {
           it('should update an user succesfully', async () => {
             //arrange
             const body: UpdateUserDto = {
-              user: 'mockTest',
-              email: 'mocktest@gmail.com',
-              phone: '5551985647070',
+              User: 'mockTest',
+              Email: 'mocktest@gmail.com',
+              Phone: '5551985647070',
             };
             //act
             const result = await userController.update('id', body);
@@ -137,9 +137,9 @@ describe('userController', () => {
           it('should throw an exception', () => {
             //arrange
             const body: UpdateUserDto = {
-              user: 'mockTest',
-              email: 'mocktest@gmail.com',
-              phone: '5551985647070',
+              User: 'mockTest',
+              Email: 'mocktest@gmail.com',
+              Phone: '5551985647070',
             };
             jest.spyOn(userService, 'update').mockRejectedValueOnce(new Error());
             //assert

@@ -7,16 +7,16 @@ export class CreateUserDto {
   @IsString()
   @IsNotEmpty()
   @Validate(Unique)
-  user: string;
+  User: string;
 
   @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
   @Validate(Unique)
-  email: string;
+  Email: string;
 
   @ApiProperty()
   @IsPhoneNumber('BR')
   @IsNotEmpty()
-  phone: string;
+  Phone: string;
 }

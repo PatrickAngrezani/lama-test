@@ -2,71 +2,73 @@ import {ApiProperty} from '@nestjs/swagger';
 import {Column, PrimaryGeneratedColumn, UpdateDateColumn, Entity} from 'typeorm';
 import * as speakeasy from 'speakeasy';
 
-let secret = speakeasy.generateSecret();
-let token = secret.base32;
-let qrcode = secret.otpauth_url;
+const secret = speakeasy.generateSecret();
+const token = secret.base32;
+const qrcode = secret.base32;
 
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
-  id: string;
+  Id: string;
 
   @UpdateDateColumn({
-    name: 'updated-at',
+    name: 'Updated-at',
     type: 'timestamptz',
     default: () => 'CURRENT_TIMESTAMP',
   })
-  updatedAt: Date;
+  UpdatedAt: Date;
 
   @ApiProperty()
   @Column({
-    name: 'user',
+    name: 'User',
     type: 'varchar',
     unique: true,
     nullable: false,
     length: 50,
   })
-  user: string;
+  User: string;
 
   @ApiProperty()
   @Column({
-    name: 'email',
+    name: 'Email',
     type: 'varchar',
     unique: true,
     nullable: false,
     length: 100,
   })
-  email: string;
+  Email: string;
 
   @ApiProperty()
   @Column({
-    name: 'phone',
+    name: 'Phone',
     type: 'varchar',
     nullable: false,
   })
-  phone: string;
+  Phone: string;
 
   @ApiProperty()
   @Column({
-    name: 'token',
+    name: 'Token',
     type: 'varchar',
     nullable: false,
   })
-  token = token;
+  Token = token;
 
   @ApiProperty()
   @Column({
-    name: 'qrcode',
+    name: 'QRcode',
     type: 'varchar',
     nullable: false,
   })
-  qrcode = qrcode;
+  QRcode = qrcode;
 
   contructor(user: Partial<UserEntity>) {
-    this.id = user.id;
-    this.updatedAt = user.updatedAt;
-    this.user = user.user;
-    this.email = user.email;
-    this.phone = user.phone;
+    this.Id = user.Id;
+    this.UpdatedAt = user.UpdatedAt;
+    this.User = user.User;
+    this.Email = user.Email;
+    this.Phone = user.Phone;
+    this.Token = user.Token;
+    this.QRcode = user.QRcode;
   }
 }

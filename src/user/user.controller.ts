@@ -11,7 +11,7 @@ import {usersSwagger} from './swagger/users.swagger';
 import {updateUserSwagger} from './swagger/updateUser.swagger';
 import {notFoundSwagger} from './swagger/error/not-found.swagger';
 
-@Controller('user')
+@Controller('users')
 @ApiTags('Users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
@@ -124,7 +124,7 @@ export class UserController {
     isArray: true,
   })
   @ApiResponse({
-    status: 204,
+    status: 200,
     description: 'All UsersData removed succesfully',
     isArray: true,
   })

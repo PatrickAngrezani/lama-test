@@ -1,9 +1,14 @@
 import {ApiProperty} from '@nestjs/swagger';
 import {Column, PrimaryGeneratedColumn, UpdateDateColumn, Entity} from 'typeorm';
+import * as speakeasy from 'speakeasy';
+
+let secret = speakeasy.generateSecret();
+let token = secret.base32;
+let qrcode = secret.otpauth_url;
 
 @Entity()
 export class UserEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @UpdateDateColumn({
@@ -37,9 +42,25 @@ export class UserEntity {
   @Column({
     name: 'phone',
     type: 'varchar',
-    nullable: true,
+    nullable: false,
   })
   phone: string;
+
+  @ApiProperty()
+  @Column({
+    name: 'token',
+    type: 'varchar',
+    nullable: false,
+  })
+  token = token;
+
+  @ApiProperty()
+  @Column({
+    name: 'qrcode',
+    type: 'varchar',
+    nullable: false,
+  })
+  qrcode = qrcode;
 
   contructor(user: Partial<UserEntity>) {
     this.id = user.id;

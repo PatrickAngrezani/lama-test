@@ -1,3 +1,4 @@
+import { addPasswordDto } from './dto/addpassword.dto';
 import {internalError} from './swagger/error/internal-error.swagger';
 import {badRequestSwagger} from './swagger/error/bad-request.swagger';
 import {userSwagger} from './swagger/user.swagger';
@@ -16,10 +17,42 @@ import {notFoundSwagger} from './swagger/error/not-found.swagger';
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
+  //addPassword
+  @Post('addPassword')
+  addPassword(@Param('Id') Id: string, @Body() addPasswordDto: addPasswordDto) {
+    return this.userService.addPassword(Id, addPasswordDto)
+  }
+
+
+
+  //verifyToken
+  @ApiResponse({
+    status: 500,
+    description: 'Internal-error',
+    type: internalError,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid parameters',
+    type: badRequestSwagger,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Token verified succesfully',
+    isArray: true,
+  })
+  @ApiOperation({summary: 'AuthToken'})
+  @Get('verify')
+  verifyToken(@Param('Id') Id: string) {
+    return this.userService.verifyToken();
+  }
+
   //create
   @ApiResponse({
     status: 500,
-    description: 'Interna-error',
+    description: 'Internal-error',
     type: internalError,
     isArray: true,
   })
@@ -80,7 +113,7 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get an user'})
-  @Get(':id')
+  @Get('id')
   findOne(@Param('id') id: string) {
     return this.userService.findOne(id);
   }
@@ -111,7 +144,7 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Update user'})
-  @Patch(':id')
+  @Patch()
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(id, updateUserDto);
   }
@@ -149,7 +182,7 @@ export class UserController {
   })
   @ApiResponse({status: 204, description: 'UserData removed succesfully'})
   @ApiOperation({summary: 'Remove especific user'})
-  @Delete(':id')
+  @Delete('id')
   remove(@Param('id') id: string) {
     return this.userService.remove(id);
   }

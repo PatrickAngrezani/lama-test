@@ -1,22 +1,15 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {Column, PrimaryGeneratedColumn, UpdateDateColumn, Entity} from 'typeorm';
+import {Column, PrimaryGeneratedColumn, Entity} from 'typeorm';
 import * as speakeasy from 'speakeasy';
+import { verify } from 'crypto';
 
-const secret = speakeasy.generateSecret();
-const token = secret.base32;
-const qrcode = secret.base32;
+const secretCode = speakeasy.generateSecret();
+const qrcode = secretCode.base32
 
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   Id: string;
-
-  @UpdateDateColumn({
-    name: 'Updated-at',
-    type: 'timestamptz',
-    default: () => 'CURRENT_TIMESTAMP',
-  })
-  UpdatedAt: Date;
 
   @ApiProperty()
   @Column({
@@ -48,27 +41,17 @@ export class UserEntity {
 
   @ApiProperty()
   @Column({
-    name: 'Token',
+    name: 'QRCode',
     type: 'varchar',
     nullable: false,
+    length: 100,
   })
-  Token = token;
-
-  @ApiProperty()
-  @Column({
-    name: 'QRcode',
-    type: 'varchar',
-    nullable: false,
-  })
-  QRcode = qrcode;
+  QRCode = qrcode;
 
   contructor(user: Partial<UserEntity>) {
     this.Id = user.Id;
-    this.UpdatedAt = user.UpdatedAt;
     this.User = user.User;
     this.Email = user.Email;
     this.Phone = user.Phone;
-    this.Token = user.Token;
-    this.QRcode = user.QRcode;
   }
 }

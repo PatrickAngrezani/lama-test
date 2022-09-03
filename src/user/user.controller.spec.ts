@@ -1,5 +1,5 @@
-import {UpdateUserDto} from './dto/update-user.dto';
-import {CreateUserDto} from './dto/create-user.dto';
+import {UpdateUserDto} from './dto.user/update-user.dto';
+import {CreateUserDto} from './dto.user/create-user.dto';
 import {UserService} from './user.service';
 import {Test, TestingModule} from '@nestjs/testing';
 import {UserController} from './user.controller';

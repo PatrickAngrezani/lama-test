@@ -1,6 +1,11 @@
 import {ApiProperty} from '@nestjs/swagger';
+import { hashSync } from 'bcrypt';
 import {IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Validate} from 'class-validator';
-import {Unique} from 'typeorm';
+import {BeforeInsert, Unique} from 'typeorm';
+import * as speakeasy from 'speakeasy';
+
+const secretCode = speakeasy.generateSecret();
+const qrcode = secretCode.base32
 
 export class CreateUserDto {
   @ApiProperty()
@@ -19,4 +24,10 @@ export class CreateUserDto {
   @IsPhoneNumber('BR')
   @IsNotEmpty()
   Phone: string;
+
+  QRCode = qrcode;
+
+  @ApiProperty()
+  @IsNotEmpty()
+  Password: string;
 }

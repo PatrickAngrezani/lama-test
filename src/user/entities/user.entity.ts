@@ -1,13 +1,16 @@
 import {ApiProperty} from '@nestjs/swagger';
 import {Column, PrimaryGeneratedColumn, Entity} from 'typeorm';
 import * as speakeasy from 'speakeasy';
-import { verify } from 'crypto';
+
 
 const secretCode = speakeasy.generateSecret();
 const qrcode = secretCode.base32
 
 @Entity()
 export class UserEntity {
+  verifyToken() {
+    throw new Error('Method not implemented.');
+  }
   @PrimaryGeneratedColumn('uuid')
   Id: string;
 
@@ -16,7 +19,7 @@ export class UserEntity {
     name: 'User',
     type: 'varchar',
     unique: true,
-    nullable: false,
+    nullable: true,
     length: 50,
   })
   User: string;
@@ -26,7 +29,7 @@ export class UserEntity {
     name: 'Email',
     type: 'varchar',
     unique: true,
-    nullable: false,
+    nullable: true,
     length: 100,
   })
   Email: string;
@@ -35,7 +38,7 @@ export class UserEntity {
   @Column({
     name: 'Phone',
     type: 'varchar',
-    nullable: false,
+    nullable: true,
   })
   Phone: string;
 
@@ -43,15 +46,25 @@ export class UserEntity {
   @Column({
     name: 'QRCode',
     type: 'varchar',
-    nullable: false,
+    nullable: true,
     length: 100,
   })
   QRCode = qrcode;
 
-  contructor(user: Partial<UserEntity>) {
-    this.Id = user.Id;
-    this.User = user.User;
-    this.Email = user.Email;
-    this.Phone = user.Phone;
+  @ApiProperty()
+  @Column({
+    name: 'Password',
+    type: 'varchar',
+    nullable: true,
+    length: 100,
+  })
+  Password: string;
+
+  constructor(user?: Partial<UserEntity>) {
+    this.Id = user?.Id;
+    this.User = user?.User;
+    this.Email = user?.Email;
+    this.Phone = user?.Phone;
+    this.Password = user?.Password;
   }
 }

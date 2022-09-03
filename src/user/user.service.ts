@@ -1,9 +1,9 @@
-import { addPasswordDto } from './dto/addpassword.dto';
+import {addPasswordDto} from './dto.user/addpassword.dto';
 import {Injectable, Body} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
-import {CreateUserDto} from './dto/create-user.dto';
-import {UpdateUserDto} from './dto/update-user.dto';
+import {CreateUserDto} from './dto.user/create-user.dto';
+import {UpdateUserDto} from './dto.user/update-user.dto';
 import {UserEntity} from './entities/user.entity';
 import * as speakeasy from 'speakeasy';
 
@@ -12,37 +12,36 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
   ) {}
-  
+
   //addPassword
   async addPassword(Id: string, addPasswordDto: addPasswordDto) {
-    const verifiedUser = await this.findOne(Id)
-    if (verifiedUser) {
-      return this.repository.save({
-        ...verifiedUser,
-        ...addPasswordDto
-      })
-    }
+    const verifiedUser = await this.findOne(Id);
+    return this.repository.save({
+      ...verifiedUser,
+      ...addPasswordDto,
+    });
   }
 
   //verifyToken
   verifyToken() {
     const verified = speakeasy.totp.verify({
-      secret: 'LJFGMY2BNR6XE53YKAWHCPRFG5KTOMJGHRNFE2LELJVW2VCWOMRQ',
+      secret: 'HRRHQMJ2I5MDAM3WEM5EIM2TERAUIJJ6LM7UU5JWLJFFAQZUFE3Q', //add user secret
       encoding: 'base32',
-      token: '099564',
+      token: '105951', // add user google auth token
     });
     return verified;
   }
-  
+
   //findAll
   findAll(): Promise<UserEntity[]> {
     return this.repository.find();
   }
 
   //findOne
-  findOne(Id: string): Promise<UserEntity> {
-    return this.repository.findOne({where: {Id}});
+  async findOne(Email: string): Promise<UserEntity|undefined> {
+    return this.repository.findOne({where: {Email}});
   }
+
 
   //create
   create(createUserDto: CreateUserDto): Promise<UserEntity> {

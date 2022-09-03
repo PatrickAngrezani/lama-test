@@ -1,10 +1,10 @@
-import {CreateUserDto} from './dto/create-user.dto';
+import {CreateUserDto} from './dto.user/create-user.dto';
 import {UserEntity} from './entities/user.entity';
 import {Test, TestingModule} from '@nestjs/testing';
 import {getRepositoryToken} from '@nestjs/typeorm';
 import {UserService} from './user.service';
 import {Repository} from 'typeorm';
-import {UpdateUserDto} from './dto/update-user.dto';
+import {UpdateUserDto} from './dto.user/update-user.dto';
 
 //const[] (mock)
 const newUserEntity = new UserEntity();

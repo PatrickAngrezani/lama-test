@@ -1,16 +1,16 @@
-import { addPasswordDto } from './dto/addpassword.dto';
-import {internalError} from './swagger/error/internal-error.swagger';
-import {badRequestSwagger} from './swagger/error/bad-request.swagger';
-import {userSwagger} from './swagger/user.swagger';
+import {addPasswordDto} from './dto.user/addpassword.dto';
+import {internalError} from './swagger.user/error/internal-error.swagger';
+import {badRequestSwagger} from './swagger.user/error/bad-request.swagger';
+import {userSwagger} from './swagger.user/user.swagger';
 import {Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common';
 import {UserService} from './user.service';
-import {CreateUserDto} from './dto/create-user.dto';
-import {UpdateUserDto} from './dto/update-user.dto';
+import {CreateUserDto} from './dto.user/create-user.dto';
+import {UpdateUserDto} from './dto.user/update-user.dto';
 import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
-import {createUserSwagger} from './swagger/createUser.swagger';
-import {usersSwagger} from './swagger/users.swagger';
-import {updateUserSwagger} from './swagger/updateUser.swagger';
-import {notFoundSwagger} from './swagger/error/not-found.swagger';
+import {createUserSwagger} from './swagger.user/createUser.swagger';
+import {usersSwagger} from './swagger.user/users.swagger';
+import {updateUserSwagger} from './swagger.user/updateUser.swagger';
+import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
 
 @Controller('users')
 @ApiTags('Users')
@@ -18,12 +18,28 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   //addPassword
+  @ApiResponse({
+    status: 500,
+    description: 'Internal-error',
+    type: internalError,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid parameters',
+    type: badRequestSwagger,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Password added succesfully',
+    isArray: true,
+  })
+  @ApiOperation({summary: 'Add Password'})
   @Post('addPassword')
   addPassword(@Param('Id') Id: string, @Body() addPasswordDto: addPasswordDto) {
-    return this.userService.addPassword(Id, addPasswordDto)
+    return this.userService.addPassword(Id, addPasswordDto);
   }
-
-
 
   //verifyToken
   @ApiResponse({
@@ -77,7 +93,7 @@ export class UserController {
   //findAll
   @ApiResponse({
     status: 500,
-    description: 'Interna-error',
+    description: 'Internal-error',
     type: internalError,
     isArray: true,
   })
@@ -96,7 +112,7 @@ export class UserController {
   //findOne
   @ApiResponse({
     status: 500,
-    description: 'Interna-error',
+    description: 'Internal-error',
     type: internalError,
     isArray: true,
   })
@@ -121,7 +137,7 @@ export class UserController {
   //update
   @ApiResponse({
     status: 500,
-    description: 'Interna-error',
+    description: 'Internal-error',
     type: internalError,
     isArray: true,
   })
@@ -152,7 +168,7 @@ export class UserController {
   //removeAll
   @ApiResponse({
     status: 500,
-    description: 'Interna-error',
+    description: 'Internal-error',
     type: internalError,
     isArray: true,
   })
@@ -170,7 +186,7 @@ export class UserController {
   //removeOne
   @ApiResponse({
     status: 500,
-    description: 'Interna-error',
+    description: 'Internal-error',
     type: internalError,
     isArray: true,
   })

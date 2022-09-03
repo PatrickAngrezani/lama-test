@@ -9,7 +9,7 @@ import {UserEntity} from './entities/user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
+    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>
   ) {}
 
   //findAll

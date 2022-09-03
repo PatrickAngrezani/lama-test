@@ -42,29 +42,10 @@ export class UserEntity {
   })
   Phone: string;
 
-  @ApiProperty()
-  @Column({
-    name: 'QRCode',
-    type: 'varchar',
-    nullable: true,
-    length: 100,
-  })
-  QRCode = qrcode;
-
-  @ApiProperty()
-  @Column({
-    name: 'Password',
-    type: 'varchar',
-    nullable: true,
-    length: 100,
-  })
-  Password: string;
-
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;
     this.User = user?.User;
     this.Email = user?.Email;
     this.Phone = user?.Phone;
-    this.Password = user?.Password;
   }
 }

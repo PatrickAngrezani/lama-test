@@ -5,6 +5,8 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 @Controller('users')
 @ApiTags('Auth')
 export class AuthController {
+
+  //login
   @UseGuards(AuthGuard('local'))
   @ApiOperation({summary: 'Auth User'})
   @Post('login')

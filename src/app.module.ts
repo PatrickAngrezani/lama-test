@@ -1,3 +1,4 @@
+import { Auth2faModule } from './auth2fa/auth2fa/auth2fa.module';
 import {Module} from '@nestjs/common';
 import {ConfigModule} from '@nestjs/config';
 import {TypeOrmModule} from '@nestjs/typeorm';
@@ -21,6 +22,7 @@ import { AuthModule } from './auth/auth.module';
     }),
     UserModule,
     AuthModule,
+    Auth2faModule,
   ],
   controllers: [AppController],
   providers: [AppService],

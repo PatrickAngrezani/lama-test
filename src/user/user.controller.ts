@@ -1,4 +1,3 @@
-import {addPasswordDto} from './dto.user/addpassword.dto';
 import {internalError} from './swagger.user/error/internal-error.swagger';
 import {badRequestSwagger} from './swagger.user/error/bad-request.swagger';
 import {userSwagger} from './swagger.user/user.swagger';
@@ -16,54 +15,6 @@ import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
 @ApiTags('Users')
 export class UserController {
   constructor(private readonly userService: UserService) {}
-
-  //addPassword
-  @ApiResponse({
-    status: 500,
-    description: 'Internal-error',
-    type: internalError,
-    isArray: true,
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid parameters',
-    type: badRequestSwagger,
-    isArray: true,
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'Password added succesfully',
-    isArray: true,
-  })
-  @ApiOperation({summary: 'Add Password'})
-  @Post('addPassword')
-  addPassword(@Param('Id') Id: string, @Body() addPasswordDto: addPasswordDto) {
-    return this.userService.addPassword(Id, addPasswordDto);
-  }
-
-  //verifyToken
-  @ApiResponse({
-    status: 500,
-    description: 'Internal-error',
-    type: internalError,
-    isArray: true,
-  })
-  @ApiResponse({
-    status: 400,
-    description: 'Invalid parameters',
-    type: badRequestSwagger,
-    isArray: true,
-  })
-  @ApiResponse({
-    status: 201,
-    description: 'Token verified succesfully',
-    isArray: true,
-  })
-  @ApiOperation({summary: 'AuthToken'})
-  @Get('verify')
-  verifyToken(@Param('Id') Id: string) {
-    return this.userService.verifyToken();
-  }
 
   //create
   @ApiResponse({

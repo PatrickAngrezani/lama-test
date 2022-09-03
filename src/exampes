@@ -1,0 +1,67 @@
+//  //addPassword
+//   async addPassword(Id: string, addPasswordDto: addPasswordDto) {
+//     const verifiedUser = await this.findOne(Id);
+//     return this.repository.save({
+//       ...verifiedUser,
+//       ...addPasswordDto,
+//     });
+//   }
+
+//   //verifyToken
+//   verifyToken() {
+//     const verified = speakeasy.totp.verify({
+//       secret: 'HRRHQMJ2I5MDAM3WEM5EIM2TERAUIJJ6LM7UU5JWLJFFAQZUFE3Q', //add user secret
+//       encoding: 'base32',
+//       token: '105951', // add user google auth token
+//     });
+//     return verified;
+//   }
+
+
+//   //addPassword
+//   @ApiResponse({
+//     status: 500,
+//     description: 'Internal-error',
+//     type: internalError,
+//     isArray: true,
+//   })
+//   @ApiResponse({
+//     status: 400,
+//     description: 'Invalid parameters',
+//     type: badRequestSwagger,
+//     isArray: true,
+//   })
+//   @ApiResponse({
+//     status: 201,
+//     description: 'Password added succesfully',
+//     isArray: true,
+//   })
+//   @ApiOperation({summary: 'Add Password'})
+//   @Post('addPassword')
+//   addPassword(@Param('Id') Id: string, @Body() addPasswordDto: addPasswordDto) {
+//     return this.userService.addPassword(Id, addPasswordDto);
+//   }
+
+//   //verifyToken
+//   @ApiResponse({
+//     status: 500,
+//     description: 'Internal-error',
+//     type: internalError,
+//     isArray: true,
+//   })
+//   @ApiResponse({
+//     status: 400,
+//     description: 'Invalid parameters',
+//     type: badRequestSwagger,
+//     isArray: true,
+//   })
+//   @ApiResponse({
+//     status: 201,
+//     description: 'Token verified succesfully',
+//     isArray: true,
+//   })
+//   @ApiOperation({summary: 'AuthToken'})
+//   @Get('verify')
+//   verifyToken(@Param('Id') Id: string) {
+//     return this.userService.verifyToken();
+//   }

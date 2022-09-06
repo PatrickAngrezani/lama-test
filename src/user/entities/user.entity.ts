@@ -40,9 +40,8 @@ export class UserEntity {
     name: 'QRCode',
     type: 'varchar',
     length: 500,
-    nullable: false
   })
-  QrCode = secret.base32
+  QrCode = secret.otpauth_url
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

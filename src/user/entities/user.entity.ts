@@ -2,15 +2,10 @@ import {ApiProperty} from '@nestjs/swagger';
 import {Column, PrimaryGeneratedColumn, Entity} from 'typeorm';
 import * as speakeasy from 'speakeasy';
 
-
-const secretCode = speakeasy.generateSecret();
-const qrcode = secretCode.base32
+const secret = speakeasy.generateSecret() 
 
 @Entity()
 export class UserEntity {
-  verifyToken() {
-    throw new Error('Method not implemented.');
-  }
   @PrimaryGeneratedColumn('uuid')
   Id: string;
 
@@ -19,7 +14,6 @@ export class UserEntity {
     name: 'User',
     type: 'varchar',
     unique: true,
-    nullable: true,
     length: 50,
   })
   User: string;
@@ -29,7 +23,6 @@ export class UserEntity {
     name: 'Email',
     type: 'varchar',
     unique: true,
-    nullable: true,
     length: 100,
   })
   Email: string;
@@ -38,9 +31,18 @@ export class UserEntity {
   @Column({
     name: 'Phone',
     type: 'varchar',
-    nullable: true,
+    length: 20
   })
   Phone: string;
+
+  @ApiProperty()
+  @Column({
+    name: 'QRCode',
+    type: 'varchar',
+    length: 500,
+    nullable: false
+  })
+  QrCode = secret.base32
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

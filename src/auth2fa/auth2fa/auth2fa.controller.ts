@@ -1,31 +1,54 @@
-import {Auth2faService} from './auth2fa.service';
-import {Controller, Request, Param, Post, Response} from '@nestjs/common';
+import {VerifyTokenDto} from './auth2fa.dto.ts/verifyToken.dto';
+import {UserEntity} from 'src/user/entities/user.entity';
+import {Controller, Request, Param, Post, Response, Get, Body} from '@nestjs/common';
 import {ApiOperation, ApiTags} from '@nestjs/swagger';
-import * as speakeasy from 'speakeasy'
-
+import * as speakeasy from 'speakeasy';
+import * as QRCode from 'qrcode';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import { JwtSecretRequestType } from '@nestjs/jwt';
 
 @Controller('auth2fa')
 @ApiTags('2FA Auth')
 export class Auth2faController {
-  constructor(private readonly auth2faService: Auth2faService) {}
+  constructor(
+    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
+  ) {}
 
-  //generateSecret
-  @ApiOperation({summary: 'Generate Secret'})
-  @Post('secret')
-  async generateSecret(@Response() res) {
-   return res.send({secret: this.auth2faService.secret.base32});
+  //generateQRCode
+  @ApiOperation({summary: 'Generate QRCode'})
+  @Get('qrcode')
+  async generateQRCode(
+    @Param('Id')
+    Id: string,
+    @Response() res,
+  ) {
+    const user = await this.repository.findOne({where: {Id}});
+    const secret = user.QrCode
+  
+    
+    QRCode.toDataURL(secret, (err, data_url) => {
+      res.send(`<img src=${data_url}>
+       <br> ${secret}`);
+    });
   }
 
-  //generateToken
-  @ApiOperation({summary: 'Generate Token'})
-  @Post('token')
-  async generateToken(@Param('secret') secret: string, @Response() res, @Request() req) {
+  //verifyToken
+  @ApiOperation({summary: 'Verify Token'})
+  @Post('verifytoken')
+  async verifyToken(@Param('Id') Id: string,
+    @Body() verifyTokenDto: VerifyTokenDto,
+    @Response() res,
+    @Request() req,
+  ) {
+    const user = await this.repository.findOne({where: {Id}})
     return res.send({
-        "token": speakeasy.totp({
-            secret: req.body.secret,
-            encoding: "base32"
-        }),
-        "remaining": (30 - Math.floor((new Date(). getTime() / 1000.0 % 30)))
-    })
+    valid: speakeasy.totp.verify({
+      secret: req.body.secret,
+      encoding: 'base32',
+      token: req.body.token,
+      window: 0,
+    }),
+    });
   }
 }

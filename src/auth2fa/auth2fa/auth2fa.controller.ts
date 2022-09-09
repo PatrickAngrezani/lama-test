@@ -34,7 +34,7 @@ export class Auth2faController {
     isArray: true,
   })
   @ApiOperation({summary: 'Generate QRCode'})
-  @Get('qrcode')
+  @Get('qrcode/:Id')
   async generateQRCode(@Param('Id') Id: string, @Response() res) {
     return this.Auth2faService.generateQRCode(Id,res) 
     };
@@ -60,7 +60,7 @@ export class Auth2faController {
     isArray: true,
   })
   @ApiOperation({summary: 'Verify Token'})
-  @Post('verifytoken')
+  @Post('verifytoken/:Id')
   async verifyToken(
     @Param('Id')
     Id: string,
@@ -91,7 +91,7 @@ export class Auth2faController {
     isArray: true,
   })
   @ApiOperation({summary: 'Add Password'})
-  @Post('addPassword')
+  @Post('addPassword/:Id')
   async addPassword(
     @Param('Id')
     Id: string,

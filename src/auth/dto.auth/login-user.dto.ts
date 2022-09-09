@@ -7,7 +7,7 @@ export class loginUserDto {
   @IsEmail()
   @IsNotEmpty()
   @Validate(Unique)
-  Email: string;
+  User: string;
 
   @ApiProperty()
   @IsNotEmpty()

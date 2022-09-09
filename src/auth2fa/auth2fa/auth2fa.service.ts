@@ -54,12 +54,16 @@ export class Auth2faService {
   ) {
     let user = await this.repository.findOne({where: {Id}});
     let newPassword = user.Password
-    if (user.Verified = true) {
-      newPassword = req.body.Password;
-      res.send((user.Password = newPassword));
-      return this.repository.save(user);
+    if (!user) {
+      res.send('invalid user')
     } else {
-      res.send('User not verified');
+      if (user.Verified = true) {
+        newPassword = req.body.Password;
+        res.send((user.Password = newPassword));
+        return this.repository.save(user);
+      } else {
+        res.send('User not verified');
+      }
     }
   }
 }

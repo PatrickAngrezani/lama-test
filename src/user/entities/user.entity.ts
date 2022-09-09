@@ -50,7 +50,7 @@ export class UserEntity {
     type: 'varchar',
     length: 20,
   })
-  Verified: boolean;
+  Verified: boolean = false;
 
   @ApiProperty()
   @Column({

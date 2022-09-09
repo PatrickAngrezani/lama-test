@@ -18,10 +18,9 @@ export class UserService {
   }
 
   //findOne
-  async findOne(Email: string): Promise<UserEntity> {
-    return this.repository.findOne({where: {Email}});
+  async findOne(User: string): Promise<UserEntity> {
+    return this.repository.findOne({where: {User}});
   }
-
 
   //create
   create(createUserDto: CreateUserDto): Promise<UserEntity> {
@@ -55,8 +54,8 @@ export class UserService {
   }
 
   //removeOne
-  async remove(id: string) {
-    const user = await this.findOne(id);
+  async remove(Id: string) {
+    const user = await this.repository.findOne({where: {Id}});
     return this.repository.remove(user);
   }
 }

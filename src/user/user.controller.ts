@@ -60,7 +60,7 @@ export class UserController {
     return this.userService.findAll();
   }
 
-  //findOne
+  //getOne
   @ApiResponse({
     status: 500,
     description: 'Internal-error',
@@ -80,9 +80,9 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get an user'})
-  @Get('id')
-  findOne(@Param('id') id: string) {
-    return this.userService.findOne(id);
+  @Get(':User')
+  findOne(@Param('User') User: string) {
+    return this.userService.findOne(User);
   }
 
   //update
@@ -149,8 +149,8 @@ export class UserController {
   })
   @ApiResponse({status: 204, description: 'UserData removed succesfully'})
   @ApiOperation({summary: 'Remove especific user'})
-  @Delete('id')
-  remove(@Param('id') id: string) {
-    return this.userService.remove(id);
+  @Delete(':Id')
+  remove(@Param('Id') Id: string) {
+    return this.userService.remove(Id);
   }
 }

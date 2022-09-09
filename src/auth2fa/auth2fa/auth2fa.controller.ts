@@ -1,3 +1,4 @@
+import { addPasswordDto } from './dto.auth2fa.ts/addPassword.dto';
 import {Auth2faService} from './auth2fa.service';
 import {verifyTokenSwagger} from './swagger.auth2fa/verifyToken.swagger';
 import {VerifyTokenDto} from './dto.auth2fa.ts/verifyToken.dto';
@@ -61,11 +62,43 @@ export class Auth2faController {
   @ApiOperation({summary: 'Verify Token'})
   @Post('verifytoken')
   async verifyToken(
+    @Param('Id')
     Id: string,
     @Body() verifyTokenDto: VerifyTokenDto,
     @Response() res,
     @Request() req,
   ) {
     return this.Auth2faService.verifyToken(Id, verifyTokenDto, res, req);
+  }
+
+  //addPassword
+  @ApiResponse({
+    status: 500,
+    description: 'Internal-error',
+    type: internalError,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 400,
+    description: 'Invalid parameters',
+    type: badRequestSwagger,
+    isArray: true,
+  })
+  @ApiResponse({
+    status: 201,
+    description: 'Password added succesfully',
+    type: verifyTokenSwagger,
+    isArray: true,
+  })
+  @ApiOperation({summary: 'Add Password'})
+  @Post('addPassword')
+  async addPassword(
+    @Param('Id')
+    Id: string,
+    @Body() addPasswordDto: addPasswordDto,
+    @Response() res,
+    @Request() req,
+  ) {
+    return this.Auth2faService.addPassword(Id, addPasswordDto, res, req);
   }
 }

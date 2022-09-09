@@ -1,5 +1,4 @@
-import {verifiedUserDto} from './../../user/dto.user/verifiedUser.dto';
-import {UpdateUserDto} from './../../user/dto.user/update-user.dto';
+import {addPasswordDto} from './dto.auth2fa.ts/addPassword.dto';
 import {VerifyTokenDto} from './dto.auth2fa.ts/verifyToken.dto';
 import {UserEntity} from 'src/user/entities/user.entity';
 import {Request, Response, Body, Injectable} from '@nestjs/common';
@@ -40,7 +39,25 @@ export class Auth2faService {
     });
     if (tokenVerified) {
       res.send((user.Verified = true));
-      return this.repository.save(user)
+      return this.repository.save(user);
+    } else {
+      res.send('User not verified');
+    }
+  }
+
+  //addPassword
+  async addPassword(
+    Id: string,
+    @Body() addPasswordDto: addPasswordDto,
+    @Response() res,
+    @Request() req,
+  ) {
+    let user = await this.repository.findOne({where: {Id}});
+    let newPassword = user.Password
+    if (user.Verified = true) {
+      newPassword = req.body.Password;
+      res.send((user.Password = newPassword));
+      return this.repository.save(user);
     } else {
       res.send('User not verified');
     }

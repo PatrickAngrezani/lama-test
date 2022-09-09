@@ -1,6 +1,6 @@
 import {ApiProperty} from '@nestjs/swagger';
 
-export class verifiedUserDto {
+export class addPasswordDto {
   @ApiProperty()
-  Verified: boolean;
+  Password: string
 }

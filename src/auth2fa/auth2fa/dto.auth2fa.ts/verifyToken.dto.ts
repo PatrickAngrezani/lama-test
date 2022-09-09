@@ -1,10 +1,9 @@
-import { ApiProperty } from "@nestjs/swagger";
+import {ApiProperty} from '@nestjs/swagger';
 
 export class VerifyTokenDto {
+  @ApiProperty()
+  secret: string;
 
-    @ApiProperty()
-    secret: string
-
-    @ApiProperty()
-    token: string
+  @ApiProperty()
+  token: string;
 }

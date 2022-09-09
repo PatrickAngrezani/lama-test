@@ -1,8 +1,9 @@
+import { IsNotEmpty } from 'class-validator';
 import {ApiProperty} from '@nestjs/swagger';
-import {Column, PrimaryGeneratedColumn, Entity} from 'typeorm';
+import {Column, PrimaryGeneratedColumn, Entity, JoinColumn, OneToOne} from 'typeorm';
 import * as speakeasy from 'speakeasy';
 
-const secret = speakeasy.generateSecret() 
+const secret = speakeasy.generateSecret();
 
 @Entity()
 export class UserEntity {
@@ -31,7 +32,7 @@ export class UserEntity {
   @Column({
     name: 'Phone',
     type: 'varchar',
-    length: 20
+    length: 20,
   })
   Phone: string;
 
@@ -41,12 +42,30 @@ export class UserEntity {
     type: 'varchar',
     length: 500,
   })
-  QrCode = secret.otpauth_url
+  QrCode = secret.otpauth_url;
+
+  @ApiProperty()
+  @Column({
+    name: 'Verified',
+    type: 'varchar',
+    length: 20,
+  })
+  Verified: boolean;
+
+  @ApiProperty()
+  @Column({
+    name: 'Password',
+    type: 'varchar',
+    length: 20,
+    nullable: true,
+  })
+  Password: string;
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;
     this.User = user?.User;
     this.Email = user?.Email;
     this.Phone = user?.Phone;
+    this.Password = user?.Password;
   }
 }

@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, Validate, Matches } from "class-validator";
+import { IsEmail, IsNotEmpty, Validate } from "class-validator";
 import { Unique } from "typeorm";
 
 
-export class UpdateUserDto {
+export class UpdateUserDto  {
   @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
@@ -13,4 +13,7 @@ export class UpdateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   Password: string;
+
+  @ApiProperty()
+  Verified: boolean;
 }

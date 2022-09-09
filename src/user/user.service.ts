@@ -1,3 +1,4 @@
+import { Auth2faService } from './../auth2fa/auth2fa/auth2fa.service';
 import {Injectable, Body} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
@@ -9,8 +10,7 @@ import {UserEntity} from './entities/user.entity';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>
-  ) {}
+    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>, private readonly Auth2faService: Auth2faService) {}
 
   //findAll
   findAll(): Promise<UserEntity[]> {
@@ -18,26 +18,34 @@ export class UserService {
   }
 
   //findOne
-  async findOne(Email: string): Promise<UserEntity|undefined> {
+  async findOne(Email: string): Promise<UserEntity> {
     return this.repository.findOne({where: {Email}});
   }
 
 
   //create
   create(createUserDto: CreateUserDto): Promise<UserEntity> {
-    const User = this.repository.create(createUserDto);
-    return this.repository.save(User);
+    const user = this.repository.create(createUserDto);
+    return this.repository.save(user);
   }
 
-  // //update
+  //update
   async update(Id: string, updatedUserDto: UpdateUserDto): Promise<UserEntity> {
-    const updatedUser = await this.repository.findOne({
-      where: {Id},
-    });
+    const user = await this.repository.findOne({where: {Id}});
     return this.repository.save({
-      ...updatedUser,
-      ...updatedUserDto,
+      ...user,
+      ...updatedUserDto
     });
+  }
+
+  //addPassword
+  async addPassword(Id: string, UpdateUserDto: UpdateUserDto): Promise<UserEntity>{
+    const user = await this.repository.findOne({where: {Id}});
+    const verified = await this.Auth2faService.verifyToken
+    if (verified) {
+      
+    } 
+    return null
   }
 
   //removeAll

@@ -1,4 +1,5 @@
 import {ApiProperty} from '@nestjs/swagger';
+import { hash } from 'bcrypt';
 import {IsEmail, IsNotEmpty, Validate} from 'class-validator';
 import {Unique} from 'typeorm';
 

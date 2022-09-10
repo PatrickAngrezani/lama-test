@@ -1,3 +1,4 @@
+import { jwtConstants } from './constants';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { LocalStrategy } from './strategies/local.strategy';
@@ -17,7 +18,7 @@ import { UserEntity } from 'src/user/entities/user.entity';
         UserModule,
         PassportModule,
         JwtModule.register({
-            privateKey: '',
+            secret: jwtConstants.secret,
             signOptions: {expiresIn: '60s'}
         }),
     ],

@@ -4,6 +4,7 @@ import {UserEntity} from 'src/user/entities/user.entity';
 import {Request, Response, Body, Injectable} from '@nestjs/common';
 import * as speakeasy from 'speakeasy';
 import * as QRCode from 'qrcode';
+import * as bcrypt from 'bcrypt';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 
@@ -54,12 +55,13 @@ export class Auth2faService {
   ) {
     let user = await this.repository.findOne({where: {Id}});
     let newPassword = user.Password
+    let newPasswordHash
     if (!user) {
       res.send('invalid user')
     } else {
       if (user.Verified = true) {
         newPassword = req.body.Password;
-        res.send((user.Password = newPassword));
+        res.send((user.Password = newPasswordHash = bcrypt.hashSync(newPassword, 8)));
         return this.repository.save(user);
       } else {
         res.send('User not verified');

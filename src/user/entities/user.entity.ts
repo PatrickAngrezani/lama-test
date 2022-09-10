@@ -1,4 +1,3 @@
-import { IsNotEmpty } from 'class-validator';
 import {ApiProperty} from '@nestjs/swagger';
 import {Column, PrimaryGeneratedColumn, Entity, JoinColumn, OneToOne} from 'typeorm';
 import * as speakeasy from 'speakeasy';
@@ -56,7 +55,7 @@ export class UserEntity {
   @Column({
     name: 'Password',
     type: 'varchar',
-    length: 20,
+    length: 100,
     nullable: true,
   })
   Password: string;

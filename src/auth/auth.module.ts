@@ -23,6 +23,7 @@ import { UserEntity } from 'src/user/entities/user.entity';
         }),
     ],
     providers: [AuthService, LocalStrategy],
-    controllers: [AuthController]
+    controllers: [AuthController],
+    exports: [JwtModule, AuthService]
 })
 export class AuthModule {}

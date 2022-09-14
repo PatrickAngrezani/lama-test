@@ -15,7 +15,7 @@ export class Auth2faService {
   ) {}
 
   //generateQRCode
-  async generateQRCode(Id: any, @Response() res) {
+  async generateQRCode(Id: string, @Response() res) {
     const user = await this.repository.findOne({where: {Id}});
     const secret = user.QrCode;
     QRCode.toDataURL(secret, (err, data_url) => {
@@ -26,12 +26,12 @@ export class Auth2faService {
 
   //verifyToken
   async verifyToken(
-    Id: string,
+    User: string,
     verifyTokenDto: VerifyTokenDto,
     @Response() res,
     @Request() req,
   ) {
-    let user = await this.repository.findOne({where: {Id}});
+    let user = await this.repository.findOne({where: {User}});
     let tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,
       encoding: 'base32',
@@ -39,10 +39,11 @@ export class Auth2faService {
       window: 0,
     });
     if (tokenVerified) {
-      res.send((user.Verified = true));
+      res.send(user.Verified = true);
       return this.repository.save(user);
     } else {
-      res.send('User not verified');
+      res.send([user.Verified = false, user.Logged = false]);
+      return this.repository.save(user)
     }
   }
 
@@ -55,7 +56,7 @@ export class Auth2faService {
   ) {
     let user = await this.repository.findOne({where: {Id}});
     let newPassword = user.Password
-    let newPasswordHash
+    let newPasswordHash;
     if (!user) {
       res.send('invalid user')
     } else {

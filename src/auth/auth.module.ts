@@ -1,3 +1,5 @@
+import { JwtStrategy } from './strategies/jwt.strategy';
+import { Auth2faService } from './../auth2fa/auth2fa/auth2fa.service';
 import { jwtConstants } from './constants';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
@@ -22,7 +24,7 @@ import { UserEntity } from 'src/user/entities/user.entity';
             signOptions: {expiresIn: '60s'}
         }),
     ],
-    providers: [AuthService, LocalStrategy],
+    providers: [AuthService, LocalStrategy, JwtStrategy],
     controllers: [AuthController],
     exports: [JwtModule, AuthService]
 })

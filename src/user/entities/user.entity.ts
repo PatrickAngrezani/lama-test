@@ -41,15 +41,16 @@ export class UserEntity {
     type: 'varchar',
     length: 500,
   })
-  QrCode = secret.otpauth_url;
+  QrCode ?= secret.otpauth_url;
 
   @ApiProperty()
   @Column({
     name: 'Verified',
     type: 'varchar',
-    length: 20,
+    length: 10,
+    default: false,
   })
-  Verified: boolean = false;
+  Verified: boolean;
 
   @ApiProperty()
   @Column({
@@ -59,6 +60,16 @@ export class UserEntity {
     nullable: true,
   })
   Password: string;
+
+  @ApiProperty()
+  @Column({
+    name: 'Logged',
+    type: 'varchar',
+    length: 10,
+    nullable: true,
+    default: false,
+  })
+  Logged: boolean;
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

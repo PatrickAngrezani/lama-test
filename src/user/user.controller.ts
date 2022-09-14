@@ -1,7 +1,7 @@
 import {internalError} from './swagger.user/error/internal-error.swagger';
 import {badRequestSwagger} from './swagger.user/error/bad-request.swagger';
 import {userSwagger} from './swagger.user/user.swagger';
-import {Controller, Get, Post, Body, Patch, Param, Delete} from '@nestjs/common';
+import {Controller, Get, Post, Body, Patch, Param, Delete, UseGuards} from '@nestjs/common';
 import {UserService} from './user.service';
 import {CreateUserDto} from './dto.user/create-user.dto';
 import {UpdateUserDto} from './dto.user/update-user.dto';
@@ -10,6 +10,7 @@ import {createUserSwagger} from './swagger.user/createUser.swagger';
 import {usersSwagger} from './swagger.user/users.swagger';
 import {updateUserSwagger} from './swagger.user/updateUser.swagger';
 import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
+import { JwtAuthGuard } from 'src/auth/strategies/jwt-authguards';
 
 @Controller('users')
 @ApiTags('Users')
@@ -55,6 +56,7 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get all users'})
+  @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.userService.findAll();

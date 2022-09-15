@@ -3,8 +3,7 @@ import {Column, PrimaryGeneratedColumn, Entity, JoinColumn, OneToOne} from 'type
 import * as speakeasy from 'speakeasy';
 
 const secret = speakeasy.generateSecret();
-let randomValue = Math.floor(Math.random() * (1000000 - 1) + 1)
-let cryptoWallet = randomValue.toFixed(2) 
+
 
 @Entity()
 export class UserEntity {
@@ -75,9 +74,15 @@ export class UserEntity {
   @Column({
     name: 'Crypto Wallet',
     type: 'numeric',
-    nullable: false
   })
-  CryptoWallet = cryptoWallet;
+  CryptoWallet = Math.floor(Math.random() * (1000000 - 1) + 1).toFixed(2)
+
+  @ApiProperty()
+  @Column({
+    name: 'Fiat Wallet',
+    type: 'numeric',
+  })
+  FiatWallet = Math.floor(Math.random() * (1000000 - 1) + 1).toFixed(2)
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

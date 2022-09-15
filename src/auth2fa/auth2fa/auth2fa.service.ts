@@ -39,7 +39,7 @@ export class Auth2faService {
       window: 0,
     });
     if (tokenVerified) {
-      res.send(user.Verified = true);
+      res.send((user.Verified = true));
       return this.repository.save(user);
     } else {
       res.send([user.Verified = false, user.Logged = false]);

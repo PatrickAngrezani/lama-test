@@ -10,7 +10,6 @@ import {createUserSwagger} from './swagger.user/createUser.swagger';
 import {usersSwagger} from './swagger.user/users.swagger';
 import {updateUserSwagger} from './swagger.user/updateUser.swagger';
 import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
-import { JwtAuthGuard } from 'src/auth/strategies/jwt-authguards';
 
 @Controller('users')
 @ApiTags('Users')
@@ -56,7 +55,7 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get all users'})
-  @UseGuards(JwtAuthGuard)
+  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.userService.findAll();

@@ -15,30 +15,9 @@ export class AuthController {
     private readonly AuthService: AuthService
   ) {}
 
-  //login
   @UseGuards(AuthGuard('local'))
-  @ApiOperation({summary: 'User login'})
-  @Post('login/:Id')
-  async login(@Param('Id') Id: string, @Response() res, @Request() req) {
-    req.user;
-    let User = await this.repository.findOne({where: {Id}});
-    let tokenVerified = speakeasy.totp.verify({
-      secret: req.body.secret,
-      encoding: 'base32',
-      token: req.body.token,
-    });
-    if (req.user && tokenVerified) {
-      res.send((User.Logged = true));
-      return this.repository.save(User);
-    }
-    res.send((User.Logged = false));
-    return this.repository.save(User);
-  }
-
-  //loginJWT
-  @UseGuards(AuthGuard('local'))
-  @Post('loginjwt/:Id')
-  async loginJwt(@Param('Id') Id: string, @Request() req) {
-    return await this.AuthService.loginJwt(req.user)
+  @Post('login')
+  async login(@Request() req) {
+    return this.AuthService.loginJwt(req.user);
   }
 }

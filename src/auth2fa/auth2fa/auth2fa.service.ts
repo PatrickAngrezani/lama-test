@@ -60,12 +60,12 @@ export class Auth2faService {
     if (!user) {
       res.send('invalid user')
     } else {
-      if (user.Verified = true) {
+      if (user.Verified === true) {
         newPassword = req.body.Password;
         res.send((user.Password = newPasswordHash = bcrypt.hashSync(newPassword, 8)));
         return this.repository.save(user);
       } else {
-        res.send('User not verified');
+        res.send('User must be verified to configure Password');
       }
     }
   }

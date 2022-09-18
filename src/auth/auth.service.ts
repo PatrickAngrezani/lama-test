@@ -1,7 +1,10 @@
-import {JwtService} from '@nestjs/jwt';
+import {VerifyTokenDto} from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {UserService} from 'src/user/user.service';
-import {Injectable, Response, UnauthorizedException} from '@nestjs/common';
+import {LoginVerifyUserDto} from './dto.auth/loginVerifyUser.dto';
+import {JwtService} from '@nestjs/jwt';
+import {Injectable, Request, Response, UnauthorizedException} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import * as speakeasy from 'speakeasy';
 import {InjectRepository} from '@nestjs/typeorm';
 import {UserEntity} from 'src/user/entities/user.entity';
 import {Repository} from 'typeorm';
@@ -10,15 +13,16 @@ import {Repository} from 'typeorm';
 export class AuthService {
   constructor(
     @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
-    private usersService: UserService,
+    private UserService: UserService,
     private JwtService: JwtService,
   ) {}
 
   //login(user/password)
-  async validateUser(User: string, Password: string): Promise<UserEntity | any> {
-    const user = await this.usersService.findOne(User);
+  async validateUser(User: string, Password: string, @Request() req) {
+
+    const user = await this.UserService.findOne(User);
     if (user) {
-      if (user && bcrypt.compareSync(Password, user.Password)) {
+      if ( user && bcrypt.compareSync(Password, user.Password)) {
         user.Logged = true;
         const {Password, ...succesfully} = user;
         this.repository.save(user);
@@ -27,19 +31,25 @@ export class AuthService {
       user.Logged = false;
       const {...failed} = user;
       this.repository.save(user);
-      return failed;
+      throw new UnauthorizedException('Incorrect password')
     }
-    throw new UnauthorizedException();
+    throw new UnauthorizedException('Incorrect user');
   }
 
   //loginJWT
-  async loginJwt(user: UserEntity) {
+  async loginJwt(user: UserEntity,VerifyTokenDto: VerifyTokenDto, @Request() req) {
     const payload = {user: user.User, sub: user.Id};
-    if (user.Logged === true) {
+    let tokenVerified = speakeasy.totp.verify({
+      secret: req.body.secret,
+      encoding: 'base32',
+      token: req.body.token,
+      window: 0,
+    });
+    if (user.Logged === true && tokenVerified) {
       return {
         access_token: this.JwtService.sign(payload),
       };
     }
-    throw new UnauthorizedException();
+    throw new UnauthorizedException('token not verified');
   }
 }

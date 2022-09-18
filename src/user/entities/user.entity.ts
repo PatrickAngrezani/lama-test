@@ -42,13 +42,12 @@ export class UserEntity {
     type: 'varchar',
     length: 500,
   })
-  QrCode ?= secret.otpauth_url;
+  QrCode = secret.otpauth_url;
 
   @ApiProperty()
   @Column({
     name: 'Verified',
     type: 'boolean',
-    nullable: false,
   })
   Verified = false;
 
@@ -56,7 +55,6 @@ export class UserEntity {
   @Column({
     name: 'Logged',
     type: 'boolean',
-    nullable: false,
   })
   Logged = false;
 
@@ -75,14 +73,14 @@ export class UserEntity {
     name: 'Crypto Wallet',
     type: 'numeric',
   })
-  CryptoWallet = Math.floor(Math.random() * (1000000 - 1) + 1).toFixed(2)
+  CryptoWallet = Number((Math.random() * (1000000 - 1) + 1).toFixed(2))
 
   @ApiProperty()
   @Column({
     name: 'Fiat Wallet',
     type: 'numeric',
   })
-  FiatWallet = Math.floor(Math.random() * (1000000 - 1) + 1).toFixed(2)
+  FiatWallet = Number((Math.random() * (1000000 - 1) + 1).toFixed(2))
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

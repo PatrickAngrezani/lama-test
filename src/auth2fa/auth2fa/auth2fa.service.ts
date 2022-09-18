@@ -1,5 +1,5 @@
+import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {addPasswordDto} from './dto.auth2fa.ts/addPassword.dto';
-import {VerifyTokenDto} from './dto.auth2fa.ts/verifyToken.dto';
 import {UserEntity} from 'src/user/entities/user.entity';
 import {Request, Response, Body, Injectable} from '@nestjs/common';
 import * as speakeasy from 'speakeasy';
@@ -24,14 +24,14 @@ export class Auth2faService {
     });
   }
 
-  //verifyToken
-  async verifyToken(
-    User: string,
+   //verifyToken
+   async verifyToken(
+    Id: string,
     verifyTokenDto: VerifyTokenDto,
     @Response() res,
     @Request() req,
   ) {
-    let user = await this.repository.findOne({where: {User}});
+    let user = await this.repository.findOne({where: {Id}});
     let tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,
       encoding: 'base32',

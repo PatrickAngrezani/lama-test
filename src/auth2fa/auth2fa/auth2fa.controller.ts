@@ -40,8 +40,8 @@ export class Auth2faController {
     };
   
 
-  //verifyToken
-  @ApiResponse({
+   //verifyToken
+   @ApiResponse({
     status: 500,
     description: 'Internal-error',
     type: internalError,
@@ -62,8 +62,7 @@ export class Auth2faController {
   @ApiOperation({summary: 'Verify Token'})
   @Post('verifytoken/:Id')
   async verifyToken(
-    @Param('Id')
-    Id: string,
+    @Param('Id') Id: string,
     @Body() verifyTokenDto: VerifyTokenDto,
     @Response() res,
     @Request() req,

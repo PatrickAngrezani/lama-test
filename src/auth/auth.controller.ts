@@ -1,23 +1,20 @@
+import { LoginVerifyUserDto } from './dto.auth/loginVerifyUser.dto';
+import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import { AuthService } from 'src/auth/auth.service';
-import {UserEntity} from 'src/user/entities/user.entity';
-import {Controller, Response, Request, Post, UseGuards, Param} from '@nestjs/common';
+import {Controller, Request, Post, UseGuards, Param, Body} from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
-import {ApiOperation, ApiTags} from '@nestjs/swagger';
-import * as speakeasy from 'speakeasy';
-import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
+import { ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiTags('Login')
 export class AuthController {
   constructor(
-    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
     private readonly AuthService: AuthService
   ) {}
 
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Request() req) {
-    return this.AuthService.loginJwt(req.user);
+  async login(@Body() VerifyTokenDto: VerifyTokenDto,@Request() req) {
+    return this.AuthService.loginJwt(req.user, VerifyTokenDto, req);
   }
 }

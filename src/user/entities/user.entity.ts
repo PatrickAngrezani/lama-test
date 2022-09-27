@@ -1,16 +1,20 @@
 import {ApiProperty} from '@nestjs/swagger';
-import {Column, PrimaryGeneratedColumn, Entity, JoinColumn, OneToOne} from 'typeorm';
+import {Column, PrimaryGeneratedColumn, Entity, Unique} from 'typeorm';
 import * as speakeasy from 'speakeasy';
+import { IsEmail, IsNotEmpty, IsPhoneNumber, Validate } from 'class-validator';
+import { UsePipes } from '@nestjs/common';
 
 const secret = speakeasy.generateSecret();
 
-
+@UsePipes()
 @Entity()
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
   Id: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @Validate(Unique)
   @Column({
     name: 'User',
     type: 'varchar',
@@ -20,6 +24,9 @@ export class UserEntity {
   User: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @Validate(Unique)
+  @IsEmail()
   @Column({
     name: 'Email',
     type: 'varchar',
@@ -29,6 +36,8 @@ export class UserEntity {
   Email: string;
 
   @ApiProperty()
+  @IsNotEmpty()
+  @IsPhoneNumber('BR')
   @Column({
     name: 'Phone',
     type: 'varchar',
@@ -42,7 +51,7 @@ export class UserEntity {
     type: 'varchar',
     length: 500,
   })
-  QrCode = secret.otpauth_url;
+  QrCode = secret.otpauth_url
 
   @ApiProperty()
   @Column({
@@ -71,16 +80,18 @@ export class UserEntity {
   @ApiProperty()
   @Column({
     name: 'Crypto Wallet',
-    type: 'numeric',
+    type: 'real',
+    nullable: true
   })
-  CryptoWallet = Number((Math.random() * (1000000 - 1) + 1).toFixed(2))
+  CryptoWallet =  Number((Math.random()*1000).toFixed(2))
 
   @ApiProperty()
   @Column({
     name: 'Fiat Wallet',
-    type: 'numeric',
+    type: 'real',
+    nullable: true
   })
-  FiatWallet = Number((Math.random() * (1000000 - 1) + 1).toFixed(2))
+  FiatWallet = Number((Math.random()*1000).toFixed(2))
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

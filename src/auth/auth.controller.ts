@@ -1,4 +1,3 @@
-import { LoginVerifyUserDto } from './dto.auth/loginVerifyUser.dto';
 import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import { AuthService } from 'src/auth/auth.service';
 import {Controller, Request, Post, UseGuards, Param, Body} from '@nestjs/common';

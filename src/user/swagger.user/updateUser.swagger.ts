@@ -1,13 +1,12 @@
 /* eslint-disable prettier/prettier */
 import { ApiProperty } from "@nestjs/swagger";
-import { IsEmail, IsNotEmpty, Validate, Matches } from "class-validator";
-import { Unique } from "typeorm";
+import { IsEmail, IsNotEmpty } from "class-validator";
+
 
 export class updateUserSwagger {
   @ApiProperty()
   @IsEmail()
   @IsNotEmpty()
-  @Validate(Unique)
   Email: string;
 
   @ApiProperty()

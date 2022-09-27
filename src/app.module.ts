@@ -2,10 +2,9 @@ import { Auth2faModule } from './auth2fa/auth2fa/auth2fa.module';
 import {Module} from '@nestjs/common';
 import {ConfigModule} from '@nestjs/config';
 import {TypeOrmModule} from '@nestjs/typeorm';
-import {AppController} from './app.controller';
-import {AppService} from './app.service';
 import {UserModule} from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { TransactionsModule } from './transactions/transactions.module';
 
 @Module({
   imports: [
@@ -24,8 +23,7 @@ import { AuthModule } from './auth/auth.module';
     UserModule,
     AuthModule,
     Auth2faModule,
-  ],
-  controllers: [AppController],
-  providers: [AppService],
+    TransactionsModule,
+  ]
 })
 export class AppModule {}

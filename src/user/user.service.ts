@@ -1,21 +1,18 @@
-import {Auth2faService} from './../auth2fa/auth2fa/auth2fa.service';
-import {Injectable, Body, InternalServerErrorException} from '@nestjs/common';
+import {UserEntity} from 'src/user/entities/user.entity';
+import {Injectable, Body} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import { Repository, DataSource } from 'typeorm';
+import {Repository, DataSource} from 'typeorm';
 import {CreateUserDto} from './dto.user/create-user.dto';
 import {UpdateUserDto} from './dto.user/update-user.dto';
-import {UserEntity} from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
-    private readonly Auth2faService: Auth2faService,
-    private DataSource: DataSource,
+    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>
   ) {}
 
   //findAll
-  findAll(): Promise<UserEntity[]> {
+  findAll() {
     return this.repository.find();
   }
 
@@ -25,7 +22,7 @@ export class UserService {
   }
 
   //create
-  create(createUserDto: CreateUserDto): Promise<UserEntity> {
+  async create(@Body() createUserDto: CreateUserDto): Promise<UserEntity> {
     const user = this.repository.create(createUserDto);
     return this.repository.save(user);
   }
@@ -49,32 +46,5 @@ export class UserService {
   async remove(Id: string) {
     const user = await this.repository.findOne({where: {Id}});
     return this.repository.remove(user);
-  }
-
-  //transferFound
-  async makeTransfer(Id: string) {
-    const queryRunner = this.DataSource.createQueryRunner();
-    const user: any = await this.findOne(Id)
-    const fromWallet = user.CryptoWallet
-    const toWallet = user.CryptoWallet
-
-    if (fromWallet && toWallet) {
-      await queryRunner.connect()
-      await queryRunner.startTransaction()
-
-      try {
-        await queryRunner.manager.update(user, Id, {
-          ...user,
-            fromWallet,
-            toWallet
-        })
-      } catch (error) {
-        await queryRunner.rollbackTransaction();
-        throw new InternalServerErrorException();
-      } finally {
-        await queryRunner.release();
-      }
-    }
-    
   }
 }

@@ -1,8 +1,7 @@
 import {VerifyTokenDto} from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {UserService} from 'src/user/user.service';
-import {LoginVerifyUserDto} from './dto.auth/loginVerifyUser.dto';
 import {JwtService} from '@nestjs/jwt';
-import {Injectable, Request, Response, UnauthorizedException} from '@nestjs/common';
+import {Injectable, Request, UnauthorizedException} from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import * as speakeasy from 'speakeasy';
 import {InjectRepository} from '@nestjs/typeorm';
@@ -19,25 +18,23 @@ export class AuthService {
 
   //login(user/password)
   async validateUser(User: string, Password: string, @Request() req) {
-
     const user = await this.UserService.findOne(User);
     if (user) {
-      if ( user && bcrypt.compareSync(Password, user.Password)) {
+      if (user && bcrypt.compareSync(Password, user.Password)) {
         user.Logged = true;
         const {Password, ...succesfully} = user;
         this.repository.save(user);
         return succesfully;
       }
       user.Logged = false;
-      const {...failed} = user;
       this.repository.save(user);
-      throw new UnauthorizedException('Incorrect password')
+      throw new UnauthorizedException('Incorrect password');
     }
     throw new UnauthorizedException('Incorrect user');
   }
 
   //loginJWT
-  async loginJwt(user: UserEntity,VerifyTokenDto: VerifyTokenDto, @Request() req) {
+  async loginJwt(user: UserEntity, VerifyTokenDto: VerifyTokenDto, @Request() req) {
     const payload = {user: user.User, sub: user.Id};
     let tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,

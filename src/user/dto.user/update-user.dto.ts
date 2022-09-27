@@ -1,8 +1,9 @@
+import { UsePipes } from '@nestjs/common';
 import {ApiProperty} from '@nestjs/swagger';
-import { hash } from 'bcrypt';
 import {IsEmail, IsNotEmpty, Validate} from 'class-validator';
 import {Unique} from 'typeorm';
 
+@UsePipes()
 export class UpdateUserDto {
   @ApiProperty()
   @IsEmail()

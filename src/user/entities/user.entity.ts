@@ -83,7 +83,7 @@ export class UserEntity {
     type: 'real',
     nullable: true
   })
-  CryptoWallet =  Number((Math.random()*1000).toFixed(2))
+  CryptoBalance: number =  0
 
   @ApiProperty()
   @Column({
@@ -91,7 +91,7 @@ export class UserEntity {
     type: 'real',
     nullable: true
   })
-  FiatWallet = Number((Math.random()*1000).toFixed(2))
+  FiatBalance: number = 0
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

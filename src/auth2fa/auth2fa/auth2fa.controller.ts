@@ -90,14 +90,14 @@ export class Auth2faController {
     isArray: true,
   })
   @ApiOperation({summary: 'Add Password'})
-  @Post('addPassword/:Id')
+  @Post('addPassword/:User')
   async addPassword(
-    @Param('Id')
-    Id: string,
+    @Param('User')
+    User: string,
     @Body() addPasswordDto: addPasswordDto,
     @Response() res,
     @Request() req,
   ) {
-    return this.Auth2faService.addPassword(Id, addPasswordDto, res, req);
+    return this.Auth2faService.addPassword(User, addPasswordDto, res, req);
   }
 }

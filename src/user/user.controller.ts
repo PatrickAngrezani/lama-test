@@ -1,7 +1,17 @@
 import {internalError} from './swagger.user/error/internal-error.swagger';
 import {badRequestSwagger} from './swagger.user/error/bad-request.swagger';
 import {userSwagger} from './swagger.user/user.swagger';
-import {Controller, Get, Post, Body, Patch, Param, Delete, Response, Request} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Response,
+  Request,
+} from '@nestjs/common';
 import {UserService} from './user.service';
 import {CreateUserDto} from './dto.user/create-user.dto';
 import {UpdateUserDto} from './dto.user/update-user.dto';
@@ -10,7 +20,6 @@ import {createUserSwagger} from './swagger.user/createUser.swagger';
 import {usersSwagger} from './swagger.user/users.swagger';
 import {updateUserSwagger} from './swagger.user/updateUser.swagger';
 import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
-
 
 @Controller('users')
 @ApiTags('Users')
@@ -113,9 +122,14 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Update user'})
-  @Patch()
-  update(@Param() id: string, @Body() updateUserDto: UpdateUserDto) {
-    return this.userService.update(id, updateUserDto);
+  @Patch(':User')
+  async update(
+    @Body() updateUserDto: UpdateUserDto,
+    @Param('User') User: string,
+    @Response() res,
+    @Request() req,
+  ) {
+    return this.userService.update(updateUserDto, User, res, req);
   }
 
   //removeAll

@@ -22,8 +22,8 @@ export class TransactionsService {
 
       if (fromUser) {
         if (toUser) {
-          fromUser.CryptoWallet -= quantityTransfered;
-          toUser.CryptoWallet += quantityTransfered;
+          fromUser.CryptoBalance -= quantityTransfered;
+          toUser.CryptoBalance += quantityTransfered;
 
           await this.DataSource.manager.save(fromUser);
           await this.DataSource.manager.save(toUser);
@@ -57,8 +57,8 @@ export class TransactionsService {
 
       if (fromUser) {
         if (toUser) {
-          fromUser.FiatWallet -= quantityTransfered;
-          toUser.FiatWallet += quantityTransfered;
+          fromUser.FiatBalance -= quantityTransfered;
+          toUser.FiatBalance += quantityTransfered;
 
           await this.DataSource.manager.save(fromUser);
           await this.DataSource.manager.save(toUser);

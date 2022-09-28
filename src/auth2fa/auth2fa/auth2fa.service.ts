@@ -1,7 +1,8 @@
+import { UserService } from 'src/user/user.service';
 import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {addPasswordDto} from './dto.auth2fa.ts/addPassword.dto';
 import {UserEntity} from 'src/user/entities/user.entity';
-import {Request, Response, Body, Injectable} from '@nestjs/common';
+import {Request, Response, Body, Injectable, UnauthorizedException} from '@nestjs/common';
 import * as speakeasy from 'speakeasy';
 import * as QRCode from 'qrcode';
 import * as bcrypt from 'bcrypt';
@@ -12,6 +13,7 @@ import {Repository} from 'typeorm';
 export class Auth2faService {
   constructor(
     @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
+    private UserService: UserService
   ) {}
 
   //generateQRCode
@@ -49,23 +51,23 @@ export class Auth2faService {
 
   //addPassword
   async addPassword(
-    Id: string,
+    User: string,
     @Body() addPasswordDto: addPasswordDto,
     @Response() res,
     @Request() req,
   ) {
-    let user = await this.repository.findOne({where: {Id}});
-    let newPassword = user.Password
+    let user = await this.UserService.findOne(User);
+    let newPassword;
     let newPasswordHash;
     if (!user) {
-      res.send('invalid user')
+      throw new UnauthorizedException('User not found');
     } else {
       if (user.Verified === true) {
         newPassword = req.body.Password;
         res.send((user.Password = newPasswordHash = bcrypt.hashSync(newPassword, 8)));
         return this.repository.save(user);
       } else {
-        res.send('User must be verified to configure Password');
+        throw new UnauthorizedException('User must be verified to configure Password');
       }
     }
   }

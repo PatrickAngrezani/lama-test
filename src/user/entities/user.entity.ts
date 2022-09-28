@@ -83,7 +83,7 @@ export class UserEntity {
     type: 'real',
     nullable: true
   })
-  CryptoBalance: number =  0
+  CryptoBalance: number =  null
 
   @ApiProperty()
   @Column({
@@ -91,7 +91,7 @@ export class UserEntity {
     type: 'real',
     nullable: true
   })
-  FiatBalance: number = 0
+  FiatBalance: number = null
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

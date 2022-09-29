@@ -1,6 +1,6 @@
 import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import { AuthService } from 'src/auth/auth.service';
-import {Controller, Request, Post, UseGuards, Param, Body} from '@nestjs/common';
+import {Controller, Request, Post, UseGuards, Body, Patch} from '@nestjs/common';
 import {AuthGuard} from '@nestjs/passport';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -11,9 +11,16 @@ export class AuthController {
     private readonly AuthService: AuthService
   ) {}
 
+  //accessTokenJWT
   @UseGuards(AuthGuard('local'))
   @Post('login')
   async login(@Body() VerifyTokenDto: VerifyTokenDto,@Request() req) {
     return this.AuthService.loginJwt(req.user, VerifyTokenDto, req);
+  }
+
+  //refreshToken
+  @Patch('login/refresh')
+  async refreshToken(oldToken: string, VerifyTokenDto: VerifyTokenDto, @Request() req) {
+    return this.AuthService.refreshToken(oldToken, VerifyTokenDto, req)
   }
 }

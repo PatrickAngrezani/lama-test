@@ -76,6 +76,13 @@ export class UserEntity {
   })
   Password: string;
 
+  @ApiProperty()
+  @Column({
+    name: 'AccessToken',
+    type: 'varchar',
+    nullable: true,
+  })
+  AccessToken = null;
 
   @ApiProperty()
   @Column({

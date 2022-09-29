@@ -11,6 +11,7 @@ import {
   Delete,
   Response,
   Request,
+  UseGuards,
 } from '@nestjs/common';
 import {UserService} from './user.service';
 import {CreateUserDto} from './dto.user/create-user.dto';
@@ -20,6 +21,7 @@ import {createUserSwagger} from './swagger.user/createUser.swagger';
 import {usersSwagger} from './swagger.user/users.swagger';
 import {updateUserSwagger} from './swagger.user/updateUser.swagger';
 import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 
 @Controller('users')
 @ApiTags('Users')
@@ -122,6 +124,7 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Update user'})
+  @UseGuards(JwtAuthGuard)
   @Patch(':User')
   async update(
     @Body() updateUserDto: UpdateUserDto,

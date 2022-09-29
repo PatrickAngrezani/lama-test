@@ -10,7 +10,7 @@ import * as speakeasy from 'speakeasy';
 @Injectable()
 export class UserService {
   constructor(
-    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>
+    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
   ) {}
 
   //findAll
@@ -34,8 +34,8 @@ export class UserService {
     @Body() updatedUserDto: UpdateUserDto,
     User: string,
     @Response() res,
-    @Request() req
-    ) {
+    @Request() req,
+  ) {
     let user = await this.findOne(User);
     let tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,
@@ -45,15 +45,15 @@ export class UserService {
     });
     if (!user) {
       throw new UnauthorizedException('User not found');
-    } 
+    }
     if (tokenVerified) {
-      let passwordUpdated = req.body.Password
-    let emailUpdated = req.body.Email
-    let passwordUpdatedHash;
-    user.Email = emailUpdated
-    user.Password = passwordUpdatedHash = bcrypt.hashSync(passwordUpdated, 8)
-    res.send([user.Email, user.Password]);
-    return this.repository.save(user);
+      let passwordUpdated = req.body.Password;
+      let emailUpdated = req.body.Email;
+      let passwordUpdatedHash;
+      user.Email = emailUpdated;
+      user.Password = passwordUpdatedHash = bcrypt.hashSync(passwordUpdated, 8);
+      res.send([user.Email, user.Password]);
+      return this.repository.update(user.Id, {Email: user.Email, Password: user.Password});
     }
     throw new UnauthorizedException('User not verified');
   }

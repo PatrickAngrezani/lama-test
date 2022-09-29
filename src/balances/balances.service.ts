@@ -1,21 +1,21 @@
-import { UserEntity } from './../user/entities/user.entity';
-import {UserService} from './../user/user.service';
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import {UserEntity} from './../user/entities/user.entity';
+import {Injectable, Request, UnauthorizedException} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
 
 @Injectable()
 export class BalancesService {
-  constructor(@InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
-    private readonly UserService: UserService) {}
+  constructor(
+    @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>
+  ) {}
 
-  async obtainBalances(User: string) {
-    const user = await this.UserService.findOne(User);
+  async obtainBalances(User: UserEntity, @Request() req) {
+    const user = await this.repository.findOneBy({AccessToken: req.header.AccessToken});
     if (user.CryptoBalance === null && user.FiatBalance === null) {
-        user.CryptoBalance = Number((Math.random()*1000).toFixed(2));
-        user.FiatBalance = Number((Math.random()*1000).toFixed(2));
-        return this.repository.save(user)
+      user.CryptoBalance = Number((Math.random() * 1000).toFixed(2));
+      user.FiatBalance = Number((Math.random() * 1000).toFixed(2));
+      return this.repository.save(user);
     }
-    throw new UnauthorizedException('User already has balances')
+    throw new UnauthorizedException('User already has balances');
   }
 }

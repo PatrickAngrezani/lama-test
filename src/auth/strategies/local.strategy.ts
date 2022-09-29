@@ -1,4 +1,3 @@
-import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {Strategy} from 'passport-local';
 import {PassportStrategy} from '@nestjs/passport';
 import {Injectable, UnauthorizedException, Request, Response} from '@nestjs/common';

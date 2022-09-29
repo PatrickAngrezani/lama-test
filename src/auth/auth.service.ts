@@ -23,17 +23,17 @@ export class AuthService {
       if (user && bcrypt.compareSync(Password, user.Password)) {
         user.Logged = true;
         const {Password, ...succesfully} = user;
-        this.repository.save(user);
+        await this.repository.save(user);
         return succesfully;
       }
       user.Logged = false;
-      this.repository.save(user);
+      await this.repository.save(user);
       throw new UnauthorizedException('Incorrect password');
     }
     throw new UnauthorizedException('Incorrect user');
   }
 
-  //loginJWT
+  //accessTokenJWT
   async loginJwt(user: UserEntity, VerifyTokenDto: VerifyTokenDto, @Request() req) {
     const payload = {user: user.User, sub: user.Id};
     let tokenVerified = speakeasy.totp.verify({
@@ -42,11 +42,24 @@ export class AuthService {
       token: req.body.token,
       window: 0,
     });
+
     if (user.Logged === true && tokenVerified) {
-      return {
-        access_token: this.JwtService.sign(payload),
-      };
+      const accessToken = this.JwtService.sign(payload);
+      user.AccessToken = accessToken
+      await this.repository.update(user.Id, {AccessToken: user.AccessToken})
+      return {accessToken}
     }
     throw new UnauthorizedException('token not verified');
+  }
+
+  //refreshToken
+  async refreshToken(oldToken: string, VerifyTokenDto: VerifyTokenDto, @Request() req) {
+    let userAccessToken = await this.repository.findOneBy({AccessToken: oldToken})
+    if (userAccessToken) {
+      let user = await this.UserService.findOne(userAccessToken.User)
+      await this.repository.update(user.Id, {AccessToken: user.AccessToken})
+      return this.loginJwt(user, VerifyTokenDto, req)
+    }
+    throw new UnauthorizedException('Invalid Token');
   }
 }

@@ -64,7 +64,7 @@ export class Auth2faService {
     } else {
       if (user.Verified === true) {
         newPassword = req.body.Password;
-        res.send((user.Password = newPasswordHash = bcrypt.hashSync(newPassword, 8)));
+        res.send(([user.Password = newPasswordHash = bcrypt.hashSync(newPassword, 8)]));
         return this.repository.save(user);
       } else {
         throw new UnauthorizedException('User must be verified to configure Password');

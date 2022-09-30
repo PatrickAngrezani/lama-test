@@ -7,6 +7,7 @@ import * as speakeasy from 'speakeasy';
 import {InjectRepository} from '@nestjs/typeorm';
 import {UserEntity} from 'src/user/entities/user.entity';
 import {Repository} from 'typeorm';
+import {DataSource} from 'typeorm';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +15,7 @@ export class AuthService {
     @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
     private UserService: UserService,
     private JwtService: JwtService,
+    private DataSource: DataSource
   ) {}
 
   //login(user/password)
@@ -54,9 +56,9 @@ export class AuthService {
 
   //refreshToken
   async refreshToken(oldToken: string, VerifyTokenDto: VerifyTokenDto, @Request() req) {
-    let userAccessToken = await this.repository.findOneBy({AccessToken: oldToken})
+    let userAccessToken = await this.DataSource.getRepository(UserEntity).findOneBy({AccessToken: req.body.oldToken})
     if (userAccessToken) {
-      let user = await this.UserService.findOne(userAccessToken.User)
+      let user = await this.DataSource.getRepository(UserEntity).findOneBy({AccessToken: req.body.oldToken})
       await this.repository.update(user.Id, {AccessToken: user.AccessToken})
       return this.loginJwt(user, VerifyTokenDto, req)
     }

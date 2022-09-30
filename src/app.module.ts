@@ -1,14 +1,16 @@
-import { Auth2faModule } from './auth2fa/auth2fa/auth2fa.module';
+import {Auth2faModule} from './auth2fa/auth2fa/auth2fa.module';
 import {Module} from '@nestjs/common';
 import {ConfigModule} from '@nestjs/config';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {UserModule} from './user/user.module';
-import { AuthModule } from './auth/auth.module';
-import { TransactionsModule } from './transactions/transactions.module';
-import { BalancesModule } from './balances/balances.module';
+import {AuthModule} from './auth/auth.module';
+import {TransactionsModule} from './transactions/transactions.module';
+import {BalancesModule} from './balances/balances.module';
+import {EventEmitterModule} from '@nestjs/event-emitter';
 
 @Module({
   imports: [
+    EventEmitterModule.forRoot(),
     ConfigModule.forRoot(),
     TypeOrmModule.forRoot({
       type: 'postgres',
@@ -26,6 +28,8 @@ import { BalancesModule } from './balances/balances.module';
     Auth2faModule,
     TransactionsModule,
     BalancesModule,
-  ]
+  ],
+  controllers: [],
+  providers: []
 })
 export class AppModule {}

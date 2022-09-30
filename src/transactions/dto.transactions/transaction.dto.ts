@@ -1,13 +1,17 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty, IsUUID, NotEquals, Validate } from "class-validator";
+
 
 export class TransactionDto {
     @ApiProperty()
     @IsNotEmpty()
+    @IsUUID()
     fromId: string;
 
     @ApiProperty()
     @IsNotEmpty()
+    @NotEquals('fromId')
+    @IsUUID()
     toId: string;
 
     @ApiProperty()

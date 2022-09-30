@@ -1,13 +1,26 @@
 import {TransactionDto} from './dto.transactions/transaction.dto';
 import {DataSource} from 'typeorm';
-import {Body, Injectable, Request} from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  HttpStatus,
+  Injectable,
+  Request,
+  Response,
+} from '@nestjs/common';
 import {UserEntity} from 'src/user/entities/user.entity';
+import {OnEvent} from '@nestjs/event-emitter';
+import {EventEmitter2} from '@nestjs/event-emitter';
 
 @Injectable()
 export class TransactionsService {
-  constructor(private DataSource: DataSource) {}
+  constructor(private DataSource: DataSource, private EventEmitter2: EventEmitter2) {}
 
-  async cryptoTransactions(@Body() TransactionDto: TransactionDto, @Request() req) {
+  async cryptoTransactions(
+    @Body() TransactionDto: TransactionDto,
+    @Request() req,
+    @Response() res,
+  ) {
     const queryRunner = this.DataSource.createQueryRunner();
     await queryRunner.startTransaction();
 
@@ -22,17 +35,84 @@ export class TransactionsService {
 
       if (fromUser) {
         if (toUser) {
-          fromUser.CryptoBalance -= quantityTransfered;
-          toUser.CryptoBalance += quantityTransfered;
+          if (fromUser.Id != toUser.Id) {
+            if (fromUser.CryptoBalance < quantityTransfered) {
+              res.status(HttpStatus.BAD_REQUEST).send(['User has not sufficient founds']);
+              throw new BadRequestException();
+            }
+            fromUser.CryptoBalance -= quantityTransfered;
+            toUser.CryptoBalance += quantityTransfered;
 
-          await this.DataSource.manager.save(fromUser);
-          await this.DataSource.manager.save(toUser);
+            await this.DataSource.manager.save(fromUser);
+            await this.DataSource.manager.save(toUser);
 
-          const transactionSuccesfully = [fromUser, toUser];
+            this.EventEmitter2.emit(
+              'Crypto.Transaction',
+              'Transaction completed successfully',
+            );
+            await queryRunner.commitTransaction();
 
-          await queryRunner.commitTransaction();
+            res.send([fromUser, toUser])
+            return {success: true}
+          }
+          res
+            .status(HttpStatus.BAD_REQUEST)
+            .send(['Transaction must be made between differents users']);
+          throw new BadRequestException();
+        }
+        throw new BadRequestException();
+      }
+      throw new BadRequestException();
+    } catch (err) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
+  }
 
-          return transactionSuccesfully;
+  async fiatTransaction(
+    @Body() TransactionDto: TransactionDto,
+    @Request() req,
+    @Response() res,
+  ) {
+    const queryRunner = this.DataSource.createQueryRunner();
+    const fromUser = await this.DataSource.getRepository(UserEntity).findOneBy({
+      Id: req.body.fromId,
+    });
+    const toUser = await this.DataSource.getRepository(UserEntity).findOneBy({
+      Id: req.body.toId,
+    });
+    const quantityTransfered = req.body.quantityTransfered;
+
+    await queryRunner.startTransaction();
+
+    try {
+      if (fromUser) {
+        if (toUser) {
+          if (fromUser.Id != toUser.Id) {
+            if (fromUser.FiatBalance < quantityTransfered) {
+              res.status(HttpStatus.BAD_REQUEST).send(['User has not sufficient founds']);
+              throw new BadRequestException();
+            }
+            fromUser.FiatBalance -= quantityTransfered;
+            toUser.FiatBalance += quantityTransfered;
+
+            await this.DataSource.manager.save(fromUser);
+            await this.DataSource.manager.save(toUser);
+
+            this.EventEmitter2.emit(
+              'Fiat.Transaction',
+              'Transaction completed successfully',
+            );
+            await queryRunner.commitTransaction();
+
+            res.send([fromUser, toUser])
+            return {success: true}
+          }
+          res
+            .status(HttpStatus.BAD_REQUEST)
+            .send(['Transaction must be made between differents users']);
+          throw new BadRequestException();
         }
       }
     } catch (err) {
@@ -42,38 +122,13 @@ export class TransactionsService {
     }
   }
 
-  async fiatTransaction(@Body() TransactionDto: TransactionDto, @Request() req) {
-    const queryRunner = this.DataSource.createQueryRunner();
-    await queryRunner.startTransaction();
+  @OnEvent('Crypto.Transaction')
+  checkCryptoTransaction(payload) {
+    console.log('CryptoTransaction:', payload);
+  }
 
-    try {
-      const fromUser = await this.DataSource.getRepository(UserEntity).findOneBy({
-        Id: req.body.fromId,
-      });
-      const toUser = await this.DataSource.getRepository(UserEntity).findOneBy({
-        Id: req.body.toId,
-      });
-      const quantityTransfered = req.body.quantityTransfered;
-
-      if (fromUser) {
-        if (toUser) {
-          fromUser.FiatBalance -= quantityTransfered;
-          toUser.FiatBalance += quantityTransfered;
-
-          await this.DataSource.manager.save(fromUser);
-          await this.DataSource.manager.save(toUser);
-
-          const transactionSuccesfully = [fromUser, toUser];
-
-          await queryRunner.commitTransaction();
-
-          return transactionSuccesfully;
-        }
-      }
-    } catch (err) {
-      await queryRunner.rollbackTransaction();
-    } finally {
-      await queryRunner.release();
-    }
+  @OnEvent('Fiat.Transaction')
+  checkFiatTransaction(payload) {
+    console.log('FiatTransaction:', payload);
   }
 }

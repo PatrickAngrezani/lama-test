@@ -1,3 +1,4 @@
+import { loginDto } from './dto.auth/login.dto';
 import {VerifyTokenDto} from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {UserService} from 'src/user/user.service';
 import {JwtService} from '@nestjs/jwt';
@@ -36,7 +37,7 @@ export class AuthService {
   }
 
   //accessTokenJWT
-  async loginJwt(user: UserEntity, VerifyTokenDto: VerifyTokenDto, @Request() req) {
+  async loginJwt(user: UserEntity, loginDto: loginDto, @Request() req) {
     const payload = {user: user.User, sub: user.Id};
     let tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,
@@ -55,12 +56,12 @@ export class AuthService {
   }
 
   //refreshToken
-  async refreshToken(oldToken: string, VerifyTokenDto: VerifyTokenDto, @Request() req) {
+  async refreshToken(oldToken: string, loginDto: loginDto,VerifyTokenDto: VerifyTokenDto, @Request() req) {
     let userAccessToken = await this.DataSource.getRepository(UserEntity).findOneBy({AccessToken: req.body.oldToken})
     if (userAccessToken) {
       let user = await this.DataSource.getRepository(UserEntity).findOneBy({AccessToken: req.body.oldToken})
       await this.repository.update(user.Id, {AccessToken: user.AccessToken})
-      return this.loginJwt(user, VerifyTokenDto, req)
+      return this.loginJwt(user, loginDto, req)
     }
     throw new UnauthorizedException('Invalid Token');
   }

@@ -16,6 +16,7 @@ import {EventEmitter2} from '@nestjs/event-emitter';
 export class TransactionsService {
   constructor(private DataSource: DataSource, private EventEmitter2: EventEmitter2) {}
 
+  //cryptoTransaction
   async cryptoTransactions(
     @Body() TransactionDto: TransactionDto,
     @Request() req,
@@ -70,6 +71,7 @@ export class TransactionsService {
     }
   }
 
+  //fiatTransaction
   async fiatTransaction(
     @Body() TransactionDto: TransactionDto,
     @Request() req,

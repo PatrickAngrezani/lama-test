@@ -67,7 +67,6 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get all users'})
-  // @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
     return this.userService.findAll();

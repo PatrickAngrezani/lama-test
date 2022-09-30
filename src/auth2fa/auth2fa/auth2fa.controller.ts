@@ -8,7 +8,7 @@ import {internalError} from 'src/user/swagger.user/error/internal-error.swagger'
 import {badRequestSwagger} from 'src/user/swagger.user/error/bad-request.swagger';
 
 @Controller('auth2fa')
-@ApiTags('2FA Auth')
+@ApiTags('2FA Authentication')
 export class Auth2faController {
   constructor(
     private readonly Auth2faService: Auth2faService
@@ -28,9 +28,8 @@ export class Auth2faController {
     isArray: true,
   })
   @ApiResponse({
-    status: 201,
+    status: 200,
     description: 'QRCode generated succesfully',
-    type: verifyTokenSwagger,
     isArray: true,
   })
   @ApiOperation({summary: 'Generate QRCode'})

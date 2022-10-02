@@ -105,6 +105,12 @@ export class UserEntity {
     this.User = user?.User;
     this.Email = user?.Email;
     this.Phone = user?.Phone;
+    this.QrCode = user?.QrCode;
+    this.Verified = user?.Verified;
+    this.Logged = user?.Logged;
     this.Password = user?.Password;
+    this.AccessToken = user?.AccessToken;
+    this.CryptoBalance = user?.CryptoBalance;
+    this.FiatBalance = user?.FiatBalance;
   }
 }

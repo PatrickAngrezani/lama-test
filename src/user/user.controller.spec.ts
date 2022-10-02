@@ -1,4 +1,3 @@
-import {UpdateUserDto} from './dto.user/update-user.dto';
 import {CreateUserDto} from './dto.user/create-user.dto';
 import {UserService} from './user.service';
 import {Test, TestingModule} from '@nestjs/testing';
@@ -13,7 +12,6 @@ const userEntityList: UserEntity[] = [
 ];
 const newUserEntity = new UserEntity();
 const oneUserEntity = new UserEntity();
-const updatedUserEntity = new UserEntity();
 const removedUserEntityList = new UserEntity();
 const removedUserEntity = new UserEntity();
 
@@ -31,7 +29,6 @@ describe('userController', () => {
             create: jest.fn().mockResolvedValue(newUserEntity),
             findAll: jest.fn().mockResolvedValue(userEntityList),
             findOne: jest.fn().mockResolvedValue(oneUserEntity),
-            update: jest.fn().mockResolvedValue(updatedUserEntity),
             removeAll: jest.fn().mockResolvedValue(removedUserEntityList),
             remove: jest.fn().mockResolvedValue(removedUserEntity),
           },
@@ -117,70 +114,40 @@ describe('userController', () => {
           expect(userController.findOne('id')).rejects.toThrowError();
         });
 
-        //update
-        describe('update', () => {
-          it('should update an user succesfully', async () => {
-            //arrange
-            const body: UpdateUserDto = {
-              User: 'mockTest',
-              Email: 'mocktest@gmail.com',
-              Phone: '5551985647070',
-            };
+        //removeAll
+        describe('removeAll', () => {
+          it('should delete all user', async () => {
             //act
-            const result = await userController.update('id', body);
+            const result = await userController.removeAll();
             //assert
-            expect(result).toEqual(updatedUserEntity);
-            expect(userService.update).toHaveBeenCalledTimes(1);
+            expect(result).toEqual(removedUserEntityList);
+            expect(userService.removeAll).toHaveBeenCalledTimes(1);
           });
+        });
 
-          //updated(exception)
-          it('should throw an exception', () => {
-            //arrange
-            const body: UpdateUserDto = {
-              User: 'mockTest',
-              Email: 'mocktest@gmail.com',
-              Phone: '5551985647070',
-            };
-            jest.spyOn(userService, 'update').mockRejectedValueOnce(new Error());
+        //removeAll(exception)
+        it('should throw an exception', () => {
+          //arrange
+          jest.spyOn(userService, 'removeAll').mockRejectedValueOnce(new Error());
+          //assert
+          expect(userController.removeAll()).rejects.toThrowError();
+        });
+
+        //removeOne
+        describe('remove', () => {
+          it('should remove an user', async () => {
+            //act
+            const result = await userController.remove('id');
             //assert
-            expect(userController.update('id', body)).rejects.toThrowError();
+            expect(result).toEqual(removedUserEntity);
+            expect(userService.remove).toHaveBeenCalledTimes(1);
           });
-
-          //removeAll
-          describe('removeAll', () => {
-            it('should delete all user', async () => {
-              //act
-              const result = await userController.removeAll();
-              //assert
-              expect(result).toEqual(removedUserEntityList);
-              expect(userService.removeAll).toHaveBeenCalledTimes(1);
-            });
-          });
-
-          //removeAll(exception)
-          it('should throw an exception', () => {
-            //arrange
-            jest.spyOn(userService, 'removeAll').mockRejectedValueOnce(new Error());
-            //assert
-            expect(userController.removeAll()).rejects.toThrowError();
-          });
-
-          //removeOne
-          describe('remove', () => {
-            it('should remove an user', async () => {
-              //act
-              const result = await userController.remove('id');
-              //assert
-              expect(result).toEqual(removedUserEntity);
-              expect(userService.remove).toHaveBeenCalledTimes(1);
-            });
-          });
-          it('should throw an exception', () => {
-            //arrange
-            jest.spyOn(userService, 'remove').mockRejectedValueOnce(new Error());
-            //assert
-            expect(userController.remove('id')).rejects.toThrowError();
-          });
+        });
+        it('should throw an exception', () => {
+          //arrange
+          jest.spyOn(userService, 'remove').mockRejectedValueOnce(new Error());
+          //assert
+          expect(userController.remove('id')).rejects.toThrowError();
         });
       });
     });

@@ -1,11 +1,18 @@
-import {UserEntity} from 'src/user/entities/user.entity';
-import {Injectable, Body, Response, Request, UnauthorizedException} from '@nestjs/common';
+import {
+  Injectable,
+  Body,
+  Response,
+  Request,
+  UnauthorizedException,
+  BadRequestException,
+} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {CreateUserDto} from './dto.user/create-user.dto';
 import {UpdateUserDto} from './dto.user/update-user.dto';
 import * as bcrypt from 'bcrypt';
 import * as speakeasy from 'speakeasy';
+import {UserEntity} from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -38,9 +45,9 @@ export class UserService {
   ) {
     let user = await this.findOne(User);
     let tokenVerified = speakeasy.totp.verify({
-      secret: req.body.secret,
+      secret: req.body?.secret,
       encoding: 'base32',
-      token: req.body.token,
+      token: req.body?.token,
       window: 0,
     });
     if (!user) {
@@ -53,9 +60,12 @@ export class UserService {
       user.Email = emailUpdated;
       user.Password = passwordUpdatedHash = bcrypt.hashSync(passwordUpdated, 8);
       res.send([user.Email, user.Password]);
-      return this.repository.update(user.Id, {Email: user.Email, Password: user.Password});
+      return this.repository.update(user.Id, {
+        Email: user.Email,
+        Password: user.Password,
+      });
     }
-    throw new UnauthorizedException('User not verified');
+    throw new BadRequestException('Token not verified');
   }
 
   //removeAll

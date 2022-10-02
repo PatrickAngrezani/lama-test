@@ -7,6 +7,7 @@ import {AuthModule} from './auth/auth.module';
 import {TransactionsModule} from './transactions/transactions.module';
 import {BalancesModule} from './balances/balances.module';
 import {EventEmitterModule} from '@nestjs/event-emitter';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -30,6 +31,6 @@ import {EventEmitterModule} from '@nestjs/event-emitter';
     BalancesModule,
   ],
   controllers: [],
-  providers: []
+  providers: [DataSource]
 })
 export class AppModule {}

@@ -35,7 +35,7 @@ export class TransactionsController {
   @ApiOperation({summary: 'Crypto Transaction'})
   @Patch('crypto')
   async cryptoTransactions(@Body() TransactionDto: TransactionDto, @Request() req, @Response() res) {
-    return this.TransactionsService.cryptoTransactions(TransactionDto, req, res);
+    return this.TransactionsService.cryptoTransactions(TransactionDto, req, res)
   }
 
   //fiatTransaction
@@ -59,7 +59,7 @@ export class TransactionsController {
   })
   @ApiOperation({summary: 'Fiat Transaction'})
   @Patch('fiat')
-  async fiatTransaction(@Body() TransactionDto: TransactionDto, @Request() req, @Response() res) {
-    return this.TransactionsService.fiatTransaction(TransactionDto, req, res);
+  async fiatTransactions(@Body() TransactionDto: TransactionDto, @Request() req, @Response() res) {
+    return this.TransactionsService.fiatTransactions(TransactionDto, req, res);
   }
 }

@@ -2,9 +2,8 @@ import {CreateUserDto} from './dto.user/create-user.dto';
 import {UserEntity} from './entities/user.entity';
 import {Test, TestingModule} from '@nestjs/testing';
 import {getRepositoryToken} from '@nestjs/typeorm';
-import {UserService} from './user.service';
 import {Repository} from 'typeorm';
-import {UpdateUserDto} from './dto.user/update-user.dto';
+import {UserService} from './user.service';
 
 //const[] (mock)
 const newUserEntity = new UserEntity();
@@ -117,36 +116,6 @@ describe('userService', () => {
       jest.spyOn(userRepository, 'findOne').mockRejectedValueOnce(new Error());
       //assert
       expect(userService.findOne('id')).rejects.toThrowError();
-    });
-  });
-
-  //update
-  describe('update', () => {
-    it('should update an user', async () => {
-      //arrange
-      const body: UpdateUserDto = {
-        User: 'mockTest',
-        Email: 'mocktest@gmail.com',
-        Phone: '5551985647070',
-      };
-      //act
-      const result = await userService.update('id', body);
-      //assert
-      expect(result).toEqual(updatedUserEntity);
-      expect(userRepository.save).toHaveBeenCalledTimes(1);
-    });
-
-    //updated(exception)
-    it('should throw an exception', () => {
-      //arrange
-      const body: UpdateUserDto = {
-        User: 'mockTest',
-        Email: 'mocktest@gmail.com',
-        Phone: '5551985647070',
-      };
-      jest.spyOn(userRepository, 'findOne').mockRejectedValueOnce(new Error());
-      //assert
-      expect(userService.update('id', body)).rejects.toThrowError();
     });
   });
 

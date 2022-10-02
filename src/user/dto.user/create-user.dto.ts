@@ -1,3 +1,4 @@
+import { UserEntity } from 'src/user/entities/user.entity';
 import { UsePipes } from '@nestjs/common';
 import {ApiProperty} from '@nestjs/swagger';
 import {IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Validate} from 'class-validator';

@@ -37,6 +37,7 @@ export class BalancesController {
     isArray: true,
   })
   @ApiOperation({summary: 'Obtain Balances'})
+  @UseGuards(JwtAuthGuard)
   @Post()
   async obtainBalances(@Request() req, @Body() balancesDto: balancesDto) {
     return this.BalancesService.obtainBalances(req, balancesDto);

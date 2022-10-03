@@ -5,7 +5,7 @@ import {IsEmail, IsNotEmpty, Validate} from 'class-validator';
 import {Unique} from 'typeorm';
 
 @UsePipes()
-export class UpdateUserDto extends CreateUserDto {
+export class UpdateUserDto {
   @ApiProperty()
   @IsNotEmpty()
   secret: string;

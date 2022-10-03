@@ -20,7 +20,7 @@ import { UserEntity } from 'src/user/entities/user.entity';
         PassportModule,
         JwtModule.register({
             secret: jwtConstants.secret,
-            signOptions: {expiresIn: '10000s'}
+            signOptions: {expiresIn: '500s'}
         }),
     ],
     providers: [AuthService, LocalStrategy, JwtStrategy],

@@ -7,7 +7,7 @@ import {
   BadRequestException,
 } from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import {Repository} from 'typeorm';
+import { Repository, DataSource, Unique } from 'typeorm';
 import {CreateUserDto} from './dto.user/create-user.dto';
 import {UpdateUserDto} from './dto.user/update-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -20,7 +20,7 @@ export class UserService {
     @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
   ) {}
 
-  //findAll
+  //getAll
   findAll() {
     return this.repository.find();
   }
@@ -43,17 +43,17 @@ export class UserService {
     @Response() res,
     @Request() req,
   ) {
-    let user = await this.findOne(User);
+    const user = await this.findOne(User)
     let tokenVerified = speakeasy.totp.verify({
-      secret: req.body?.secret,
+      secret: req.body.secret,
       encoding: 'base32',
-      token: req.body?.token,
+      token: req.body.token,
       window: 0,
     });
     if (!user) {
-      throw new UnauthorizedException('User not found');
+      throw new BadRequestException('User not found');
     }
-    if (tokenVerified) {
+    if (tokenVerified && updatedUserDto.Email !== user.Email) {
       let passwordUpdated = req.body.Password;
       let emailUpdated = req.body.Email;
       let passwordUpdatedHash;
@@ -65,7 +65,7 @@ export class UserService {
         Password: user.Password,
       });
     }
-    throw new BadRequestException('Token not verified');
+    throw new BadRequestException();
   }
 
   //removeAll

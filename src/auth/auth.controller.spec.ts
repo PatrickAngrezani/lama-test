@@ -1,3 +1,4 @@
+import { refreshTokenDto } from './dto.auth/refreshToken.dto';
 import {VerifyTokenDto} from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {loginDto} from './dto.auth/login.dto';
 import {AuthService} from 'src/auth/auth.service';
@@ -12,6 +13,7 @@ const verifyTokenDto = new VerifyTokenDto();
 const req = Request();
 let user: UserEntity;
 let oldToken: string;
+let RefreshTokenDto: refreshTokenDto
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -65,7 +67,7 @@ describe('AuthController', () => {
   describe('refreshToken', () => {
     it('should refresh users accessToken', async () => {
       //act
-      await authController.refreshToken(oldToken, LoginDto, verifyTokenDto, req);
+      await authController.refreshToken(RefreshTokenDto, req);
       //assert
       expect(authService.refreshToken).toBeDefined();
       expect(authService.refreshToken).toHaveBeenCalled();
@@ -79,7 +81,7 @@ describe('AuthController', () => {
       jest.spyOn(authService, 'refreshToken').mockRejectedValueOnce(new Error());
       //assert
       expect(
-        authService.refreshToken(oldToken, LoginDto, verifyTokenDto, req),
+        authService.refreshToken(RefreshTokenDto, req),
       ).rejects.toThrowError();
     });
   });

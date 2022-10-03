@@ -1,3 +1,4 @@
+
 import {internalError} from './swagger.user/error/internal-error.swagger';
 import {badRequestSwagger} from './swagger.user/error/bad-request.swagger';
 import {userSwagger} from './swagger.user/user.swagger';
@@ -22,6 +23,7 @@ import {usersSwagger} from './swagger.user/users.swagger';
 import {updateUserSwagger} from './swagger.user/updateUser.swagger';
 import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+
 
 
 @Controller('users')
@@ -54,7 +56,7 @@ export class UserController {
     return this.userService.create(createUserDto);
   }
 
-  //findAll
+  //getAll
   @ApiResponse({
     status: 500,
     description: 'Internal-error',
@@ -68,7 +70,9 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get all users'})
-  @Get()
+  
+  @Get('get')
+  @UseGuards(JwtAuthGuard)
   findAll() {
     return this.userService.findAll();
   }
@@ -93,7 +97,8 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get an user'})
-  @Get(':User')
+  @UseGuards(JwtAuthGuard)
+  @Post('get/:User')
   findOne(@Param('User') User: string) {
     return this.userService.findOne(User);
   }
@@ -148,6 +153,7 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Remove all users'})
+  @UseGuards(JwtAuthGuard)
   @Delete()
   removeAll() {
     return this.userService.removeAll();
@@ -168,6 +174,7 @@ export class UserController {
   })
   @ApiResponse({status: 204, description: 'UserData removed succesfully'})
   @ApiOperation({summary: 'Remove especific user'})
+  @UseGuards(JwtAuthGuard)
   @Delete('delete/:Id')
   remove(@Param('Id') Id: string) {
     return this.userService.remove(Id);

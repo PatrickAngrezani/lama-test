@@ -1,3 +1,4 @@
+import { refreshTokenDto } from './dto.auth/refreshToken.dto';
 import { loginDto } from './dto.auth/login.dto';
 import {VerifyTokenDto} from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {UserService} from 'src/user/user.service';
@@ -56,12 +57,15 @@ export class AuthService {
   }
 
   //refreshToken
-  async refreshToken(oldToken: string, loginDto: loginDto,VerifyTokenDto: VerifyTokenDto, @Request() req) {
+  async refreshToken(refreshTokenDto: refreshTokenDto, @Request() req) {
     let userAccessToken = await this.DataSource.getRepository(UserEntity).findOneBy({AccessToken: req.body.oldToken})
     if (userAccessToken) {
       let user = await this.DataSource.getRepository(UserEntity).findOneBy({AccessToken: req.body.oldToken})
+      const payload = {user: user.User, sub: user.Id};
+      const accessToken = this.JwtService.sign(payload)
+      user.AccessToken = accessToken
       await this.repository.update(user.Id, {AccessToken: user.AccessToken})
-      return this.loginJwt(user, loginDto, req)
+      return {accessToken}
     }
     throw new UnauthorizedException('Invalid Token');
   }

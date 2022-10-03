@@ -1,3 +1,4 @@
+import { refreshTokenDto } from './dto.auth/refreshToken.dto';
 import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {Test, TestingModule} from '@nestjs/testing';
 import {AuthService} from './auth.service';
@@ -12,6 +13,7 @@ const verifyTokenDto = new VerifyTokenDto()
 let User: string;
 let Password: string;
 let oldToken: string;
+let RefreshTokenDto: refreshTokenDto
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -84,7 +86,7 @@ describe('AuthService', () => {
   describe('refreshToken', () => {
     it('should refreshes user AccessToken', async () => {
       //act
-      await authService.refreshToken(oldToken, LoginDto, verifyTokenDto, req)
+      await authService.refreshToken(RefreshTokenDto, req)
       //assert
       expect(authService.refreshToken).toBeDefined();
       expect(authService.refreshToken).toHaveBeenCalled();
@@ -97,7 +99,7 @@ describe('AuthService', () => {
       //arrange
       jest.spyOn(authService, 'refreshToken').mockRejectedValueOnce(new Error());
       //assert
-      expect(authService.refreshToken(oldToken, LoginDto, verifyTokenDto, req)).rejects.toThrowError();
+      expect(authService.refreshToken(RefreshTokenDto, req)).rejects.toThrowError();
     });
   });
 });

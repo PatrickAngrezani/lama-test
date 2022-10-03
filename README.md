@@ -21,12 +21,12 @@
 "Verified: True"
 
 - Adicionar Senha:<br>
--Agora com o campo "Verified: True", é possível configurar uma senha para o usuário.;<br>
+-Agora com o campo "Verified: True", é possível configurar uma senha para o usuário;<br>
 -Informando User como parâmetro ao endpoint (Post)/auth2fa/addpassword/{User} e também o campo "Password" com a senha desejada, tal senha será configurada ao usuário, a mesma será retornada de forma criptografada e o campo a seguir sofrerá a seguinte alteração:<br>
 "Password: {Senha criptografada}"
 
 - Obter AccessToken:<br>
--Com a senha configurada, será possível obter o "AccessToken" que será útil nos próximos passos.;<br>
+-Com a senha configurada, será possível obter o "AccessToken" que será útil nos próximos passos;<br>
 -No endpoint (Post)/users/login, preencha os seguintes campos com as informações referentes ao usuário:<br>
 -secret:"";<br>
 -token:"";<br>
@@ -43,5 +43,16 @@
 "CryptoWallet: {A carteira irá receber um valor aleatório}"
 
 - Crypto Transaction:<br>
+-Junto ao endpoint (Patch)/transactions/crypto, informe os campos a seguir:<br>
+-"fromId": {Id do usuário que irá enviar saldo};<br>
+-"toId": {Id do usuário que irá receber saldo};<br>
+-"quantityTransafered": {Quantidade a ser transferida entre usuários}
 
-- Fiat Transaction:
+
+- Fiat Transaction:<br>
+-Junto ao endpoint (Patch)/transactions/fiat, informe os campos a seguir:<br>
+-"fromId": {Id do usuário que irá enviar saldo};<br>
+-"toId": {Id do usuário que irá receber saldo};<br>
+-"quantityTransafered": {Quantidade a ser transferida entre usuários}
+
+- Funções gerais da aplicação:

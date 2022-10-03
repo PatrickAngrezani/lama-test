@@ -23,7 +23,6 @@ import {updateUserSwagger} from './swagger.user/updateUser.swagger';
 import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
 import {JwtAuthGuard} from 'src/auth/jwt-auth.guard';
 
-
 @Controller('users')
 @ApiTags('Users')
 export class UserController {

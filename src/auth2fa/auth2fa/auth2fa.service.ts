@@ -1,5 +1,7 @@
-import { UserService } from 'src/user/user.service';
-import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {UserService} from 'src/user/user.service';
+import {VerifyTokenDto} from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
 import {addPasswordDto} from './dto.auth2fa.ts/addPassword.dto';
 import {UserEntity} from 'src/user/entities/user.entity';
 import {Request, Response, Body, Injectable, UnauthorizedException} from '@nestjs/common';
@@ -13,7 +15,7 @@ import {Repository} from 'typeorm';
 export class Auth2faService {
   constructor(
     @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
-    private UserService: UserService
+    private UserService: UserService,
   ) {}
 
   //generateQRCode
@@ -26,15 +28,15 @@ export class Auth2faService {
     });
   }
 
-   //verifyToken
-   async verifyToken(
+  //verifyToken
+  async verifyToken(
     Id: string,
     verifyTokenDto: VerifyTokenDto,
     @Response() res,
     @Request() req,
   ) {
-    let user = await this.repository.findOne({where: {Id}});
-    let tokenVerified = speakeasy.totp.verify({
+    const user = await this.repository.findOne({where: {Id}});
+    const tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,
       encoding: 'base32',
       token: req.body.token,
@@ -44,8 +46,8 @@ export class Auth2faService {
       res.send((user.Verified = true));
       return this.repository.save(user);
     } else {
-      res.send([user.Verified = false, user.Logged = false]);
-      return this.repository.save(user)
+      res.send([(user.Verified = false), (user.Logged = false)]);
+      return this.repository.save(user);
     }
   }
 
@@ -56,7 +58,7 @@ export class Auth2faService {
     @Response() res,
     @Request() req,
   ) {
-    let user = await this.UserService.findOne(User);
+    const user = await this.UserService.findOne(User);
     let newPassword;
     let newPasswordHash;
     if (!user) {
@@ -64,7 +66,7 @@ export class Auth2faService {
     } else {
       if (user.Verified === true) {
         newPassword = req.body.Password;
-        res.send(([user.Password = newPasswordHash = bcrypt.hashSync(newPassword, 8)]));
+        res.send([(user.Password = newPasswordHash = bcrypt.hashSync(newPassword, 8))]);
         return this.repository.save(user);
       } else {
         throw new UnauthorizedException('User must be verified to configure Password');

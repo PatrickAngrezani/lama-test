@@ -1,5 +1,4 @@
-import { refreshTokenDto } from './dto.auth/refreshToken.dto';
-import { VerifyTokenDto } from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
+import {refreshTokenDto} from './dto.auth/refreshToken.dto';
 import {Test, TestingModule} from '@nestjs/testing';
 import {AuthService} from './auth.service';
 import {UserEntity} from 'src/user/entities/user.entity';
@@ -8,12 +7,10 @@ import {loginDto} from './dto.auth/login.dto';
 
 const userEntify = new UserEntity();
 const req = Request();
-const LoginDto = new loginDto()
-const verifyTokenDto = new VerifyTokenDto()
+const LoginDto = new loginDto();
 let User: string;
 let Password: string;
-let oldToken: string;
-let RefreshTokenDto: refreshTokenDto
+let RefreshTokenDto: refreshTokenDto;
 
 describe('AuthService', () => {
   let authService: AuthService;
@@ -86,7 +83,7 @@ describe('AuthService', () => {
   describe('refreshToken', () => {
     it('should refreshes user AccessToken', async () => {
       //act
-      await authService.refreshToken(RefreshTokenDto, req)
+      await authService.refreshToken(RefreshTokenDto, req);
       //assert
       expect(authService.refreshToken).toBeDefined();
       expect(authService.refreshToken).toHaveBeenCalled();

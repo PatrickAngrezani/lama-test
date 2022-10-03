@@ -67,11 +67,7 @@ describe('TransactionsController', () => {
   describe('fiatTransaction', () => {
     it('should make a fiat transaction', async () => {
       //act
-      const fiatTransaction = await transactionsController.fiatTransactions(
-        transactionDto,
-        req,
-        res,
-      );
+      await transactionsController.fiatTransactions(transactionDto, req, res);
       //assert
       expect(transactionsService.fiatTransactions).toBeDefined();
       expect(transactionsService.fiatTransactions).toHaveBeenCalledTimes(1);

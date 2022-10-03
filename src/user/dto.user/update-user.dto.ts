@@ -1,5 +1,4 @@
-import { CreateUserDto } from './create-user.dto';
-import { UsePipes } from '@nestjs/common';
+import {UsePipes} from '@nestjs/common';
 import {ApiProperty} from '@nestjs/swagger';
 import {IsEmail, IsNotEmpty, Validate} from 'class-validator';
 import {Unique} from 'typeorm';

@@ -1,11 +1,11 @@
-import { balancesDto } from './dto.balances/balances.dto';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {balancesDto} from './dto.balances/balances.dto';
 import {BalancesService} from './balances.service';
-import {Body, Controller, Get, Post, Request, UseGuards} from '@nestjs/common';
+import {Body, Controller, Post, Request, UseGuards} from '@nestjs/common';
 import {JwtAuthGuard} from 'src/auth/jwt-auth.guard';
-import { ApiResponse, ApiOperation, ApiTags, ApiBearerAuth } from '@nestjs/swagger';
-import { transactionSwagger } from 'src/transactions/swagger.transaction/transaction.swagger';
-import { badRequestSwagger } from 'src/user/swagger.user/error/bad-request.swagger';
-import { internalError } from 'src/user/swagger.user/error/internal-error.swagger';
+import {ApiResponse, ApiOperation, ApiTags, ApiBearerAuth} from '@nestjs/swagger';
+import {badRequestSwagger} from 'src/user/swagger.user/error/bad-request.swagger';
+import {internalError} from 'src/user/swagger.user/error/internal-error.swagger';
 
 @ApiTags('Obtain Balances')
 @Controller('balances')

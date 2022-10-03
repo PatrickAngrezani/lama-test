@@ -1,13 +1,7 @@
-import {
-  Injectable,
-  Body,
-  Response,
-  Request,
-  UnauthorizedException,
-  BadRequestException,
-} from '@nestjs/common';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {Injectable, Body, Response, Request, BadRequestException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
-import { Repository, DataSource, Unique } from 'typeorm';
+import {Repository} from 'typeorm';
 import {CreateUserDto} from './dto.user/create-user.dto';
 import {UpdateUserDto} from './dto.user/update-user.dto';
 import * as bcrypt from 'bcrypt';
@@ -43,8 +37,8 @@ export class UserService {
     @Response() res,
     @Request() req,
   ) {
-    const user = await this.findOne(User)
-    let tokenVerified = speakeasy.totp.verify({
+    const user = await this.findOne(User);
+    const tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,
       encoding: 'base32',
       token: req.body.token,
@@ -54,8 +48,8 @@ export class UserService {
       throw new BadRequestException('User not found');
     }
     if (tokenVerified && updatedUserDto.Email !== user.Email) {
-      let passwordUpdated = req.body.Password;
-      let emailUpdated = req.body.Email;
+      const passwordUpdated = req.body.Password;
+      const emailUpdated = req.body.Email;
       let passwordUpdatedHash;
       user.Email = emailUpdated;
       user.Password = passwordUpdatedHash = bcrypt.hashSync(passwordUpdated, 8);

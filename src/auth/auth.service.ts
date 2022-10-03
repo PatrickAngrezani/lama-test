@@ -1,6 +1,6 @@
-import { refreshTokenDto } from './dto.auth/refreshToken.dto';
-import { loginDto } from './dto.auth/login.dto';
-import {VerifyTokenDto} from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {refreshTokenDto} from './dto.auth/refreshToken.dto';
+import {loginDto} from './dto.auth/login.dto';
 import {UserService} from 'src/user/user.service';
 import {JwtService} from '@nestjs/jwt';
 import {Injectable, Request, UnauthorizedException} from '@nestjs/common';
@@ -17,7 +17,7 @@ export class AuthService {
     @InjectRepository(UserEntity) private readonly repository: Repository<UserEntity>,
     private UserService: UserService,
     private JwtService: JwtService,
-    private DataSource: DataSource
+    private DataSource: DataSource,
   ) {}
 
   //login(user/password)
@@ -40,7 +40,7 @@ export class AuthService {
   //accessTokenJWT
   async loginJwt(user: UserEntity, loginDto: loginDto, @Request() req) {
     const payload = {user: user.User, sub: user.Id};
-    let tokenVerified = speakeasy.totp.verify({
+    const tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,
       encoding: 'base32',
       token: req.body.token,
@@ -49,23 +49,27 @@ export class AuthService {
 
     if (user.Logged === true && tokenVerified) {
       const accessToken = this.JwtService.sign(payload);
-      user.AccessToken = accessToken
-      await this.repository.update(user.Id, {AccessToken: user.AccessToken})
-      return {accessToken}
+      user.AccessToken = accessToken;
+      await this.repository.update(user.Id, {AccessToken: user.AccessToken});
+      return {accessToken};
     }
     throw new UnauthorizedException('token not verified');
   }
 
   //refreshToken
   async refreshToken(refreshTokenDto: refreshTokenDto, @Request() req) {
-    let userAccessToken = await this.DataSource.getRepository(UserEntity).findOneBy({AccessToken: req.body.oldToken})
+    const userAccessToken = await this.DataSource.getRepository(UserEntity).findOneBy({
+      AccessToken: req.body.oldToken,
+    });
     if (userAccessToken) {
-      let user = await this.DataSource.getRepository(UserEntity).findOneBy({AccessToken: req.body.oldToken})
+      const user = await this.DataSource.getRepository(UserEntity).findOneBy({
+        AccessToken: req.body.oldToken,
+      });
       const payload = {user: user.User, sub: user.Id};
-      const accessToken = this.JwtService.sign(payload)
-      user.AccessToken = accessToken
-      await this.repository.update(user.Id, {AccessToken: user.AccessToken})
-      return {accessToken}
+      const accessToken = this.JwtService.sign(payload);
+      user.AccessToken = accessToken;
+      await this.repository.update(user.Id, {AccessToken: user.AccessToken});
+      return {accessToken};
     }
     throw new UnauthorizedException('Invalid Token');
   }

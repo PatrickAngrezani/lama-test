@@ -1,5 +1,4 @@
-import { refreshTokenDto } from './dto.auth/refreshToken.dto';
-import {VerifyTokenDto} from 'src/auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
+import {refreshTokenDto} from './dto.auth/refreshToken.dto';
 import {loginDto} from './dto.auth/login.dto';
 import {AuthService} from 'src/auth/auth.service';
 import {Test, TestingModule} from '@nestjs/testing';
@@ -9,11 +8,9 @@ import {Request} from '@nestjs/common';
 
 const userEntify = new UserEntity();
 const LoginDto = new loginDto();
-const verifyTokenDto = new VerifyTokenDto();
 const req = Request();
 let user: UserEntity;
-let oldToken: string;
-let RefreshTokenDto: refreshTokenDto
+let RefreshTokenDto: refreshTokenDto;
 
 describe('AuthController', () => {
   let authController: AuthController;
@@ -80,9 +77,7 @@ describe('AuthController', () => {
       //arrange
       jest.spyOn(authService, 'refreshToken').mockRejectedValueOnce(new Error());
       //assert
-      expect(
-        authService.refreshToken(RefreshTokenDto, req),
-      ).rejects.toThrowError();
+      expect(authService.refreshToken(RefreshTokenDto, req)).rejects.toThrowError();
     });
   });
 });

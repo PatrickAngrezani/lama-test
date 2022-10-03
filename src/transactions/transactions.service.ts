@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {TransactionDto} from './dto.transactions/transaction.dto';
 import {DataSource} from 'typeorm';
 import {Body, Injectable, Request, Response} from '@nestjs/common';
@@ -17,13 +18,13 @@ export class TransactionsService {
     const queryRunner = this.DataSource.createQueryRunner();
     await queryRunner.startTransaction();
 
-    let fromUser = await this.DataSource.getRepository(UserEntity).findOneBy({
+    const fromUser = await this.DataSource.getRepository(UserEntity).findOneBy({
       Id: req.body.fromId,
     });
-    let toUser = await this.DataSource.getRepository(UserEntity).findOneBy({
+    const toUser = await this.DataSource.getRepository(UserEntity).findOneBy({
       Id: req.body.toId,
     });
-    let quantityTransfered = await req.body.quantityTransfered;
+    const quantityTransfered = await req.body.quantityTransfered;
 
     try {
       if (fromUser.Id != toUser.Id && fromUser.CryptoBalance > quantityTransfered) {

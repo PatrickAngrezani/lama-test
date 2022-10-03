@@ -1,5 +1,6 @@
+/* eslint-disable prettier/prettier */
 import {ApiProperty} from '@nestjs/swagger';
-import {IsNotEmpty, IsUUID, NotEquals, Validate} from 'class-validator';
+import {IsNotEmpty, IsUUID, NotEquals} from 'class-validator';
 
 export class TransactionDto {
   @ApiProperty()

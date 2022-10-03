@@ -1,5 +1,5 @@
-import { refreshTokenDto } from './dto.auth/refreshToken.dto';
-import {VerifyTokenDto} from './../auth2fa/auth2fa/dto.auth2fa.ts/verifyToken.dto';
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {refreshTokenDto} from './dto.auth/refreshToken.dto';
 import {loginDto} from './dto.auth/login.dto';
 import {AuthService} from 'src/auth/auth.service';
 import {Controller, Request, Post, UseGuards, Body, Patch} from '@nestjs/common';
@@ -58,10 +58,7 @@ export class AuthController {
   })
   @ApiOperation({summary: 'Refresh AccessToken'})
   @Patch('login/refresh')
-  async refreshToken(
-    @Body() refreshTokenDto: refreshTokenDto,
-    @Request() req,
-  ) {
+  async refreshToken(@Body() refreshTokenDto: refreshTokenDto, @Request() req) {
     return this.AuthService.refreshToken(refreshTokenDto, req);
   }
 }

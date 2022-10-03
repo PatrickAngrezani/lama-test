@@ -1,7 +1,7 @@
-import { UsePipes } from '@nestjs/common';
+import {UsePipes} from '@nestjs/common';
 import {ApiProperty} from '@nestjs/swagger';
 import {IsEmail, IsNotEmpty, IsPhoneNumber, IsString, Validate} from 'class-validator';
-import { Unique} from 'typeorm';
+import {Unique} from 'typeorm';
 
 @UsePipes()
 export class CreateUserDto {
@@ -20,5 +20,5 @@ export class CreateUserDto {
   @ApiProperty()
   @IsPhoneNumber('BR')
   @IsNotEmpty()
-  Phone: string
+  Phone: string;
 }

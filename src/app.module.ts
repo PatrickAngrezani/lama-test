@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {Auth2faModule} from './auth2fa/auth2fa/auth2fa.module';
 import {Module} from '@nestjs/common';
 import {ConfigModule, ConfigService} from '@nestjs/config';
@@ -30,7 +31,7 @@ import {DataSource} from 'typeorm';
       dataSourceFactory: async (options) => {
         console.log(options);
         const dataSource = await new DataSource(options).initialize();
-        
+
         return dataSource;
       },
     }),
@@ -38,7 +39,7 @@ import {DataSource} from 'typeorm';
     AuthModule,
     Auth2faModule,
     TransactionsModule,
-    BalancesModule
+    BalancesModule,
   ],
   controllers: [],
   providers: [],

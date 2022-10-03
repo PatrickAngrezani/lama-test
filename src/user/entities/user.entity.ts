@@ -1,8 +1,9 @@
+/* eslint-disable prettier/prettier */
 import {ApiProperty} from '@nestjs/swagger';
 import {Column, PrimaryGeneratedColumn, Entity, Unique} from 'typeorm';
 import * as speakeasy from 'speakeasy';
-import { IsEmail, IsNotEmpty, IsPhoneNumber, Validate } from 'class-validator';
-import { UsePipes } from '@nestjs/common';
+import {IsEmail, IsNotEmpty, IsPhoneNumber, Validate} from 'class-validator';
+import {UsePipes} from '@nestjs/common';
 
 const secret = speakeasy.generateSecret();
 
@@ -51,7 +52,7 @@ export class UserEntity {
     type: 'varchar',
     length: 500,
   })
-  QrCode = secret.otpauth_url
+  QrCode = secret.otpauth_url;
 
   @ApiProperty()
   @Column({
@@ -88,17 +89,17 @@ export class UserEntity {
   @Column({
     name: 'Crypto Wallet',
     type: 'real',
-    nullable: true
+    nullable: true,
   })
-  CryptoBalance: number =  null
+  CryptoBalance: number = null;
 
   @ApiProperty()
   @Column({
     name: 'Fiat Wallet',
     type: 'real',
-    nullable: true
+    nullable: true,
   })
-  FiatBalance: number = null
+  FiatBalance: number = null;
 
   constructor(user?: Partial<UserEntity>) {
     this.Id = user?.Id;

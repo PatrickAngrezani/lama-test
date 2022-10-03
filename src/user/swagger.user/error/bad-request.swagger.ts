@@ -1,4 +1,5 @@
-import { ApiProperty } from '@nestjs/swagger';
+/* eslint-disable prettier/prettier */
+import {ApiProperty} from '@nestjs/swagger';
 
 //400
 export class badRequestSwagger {

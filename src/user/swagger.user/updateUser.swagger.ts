@@ -13,4 +13,3 @@ export class updateUserSwagger {
   @IsNotEmpty()
   Password: string;
 }
-

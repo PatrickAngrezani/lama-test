@@ -8,7 +8,6 @@ import {UserController} from './user.controller';
 import {JwtModule} from '@nestjs/jwt';
 import {jwtConstants} from 'src/auth/constants';
 import {JwtStrategy} from 'src/auth/strategies/jwt.strategy';
-import {LocalStrategy} from 'src/auth/strategies/local.strategy';
 
 @Module({
   imports: [

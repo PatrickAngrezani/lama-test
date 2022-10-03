@@ -1,4 +1,7 @@
-import { addPasswordDto } from './dto.auth2fa.ts/addPassword.dto';
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable prettier/prettier */
+import {addPasswordDto} from './dto.auth2fa.ts/addPassword.dto';
 import {Auth2faService} from './auth2fa.service';
 import {verifyTokenSwagger} from './swagger.auth2fa/verifyToken.swagger';
 import {VerifyTokenDto} from './dto.auth2fa.ts/verifyToken.dto';
@@ -10,9 +13,7 @@ import {badRequestSwagger} from 'src/user/swagger.user/error/bad-request.swagger
 @Controller('auth2fa')
 @ApiTags('2FA Authentication')
 export class Auth2faController {
-  constructor(
-    private readonly Auth2faService: Auth2faService
-  ) {}
+  constructor(private readonly Auth2faService: Auth2faService) {}
 
   //generateQRCode
   @ApiResponse({
@@ -35,12 +36,11 @@ export class Auth2faController {
   @ApiOperation({summary: 'Generate QRCode'})
   @Get('qrcode/:Id')
   async generateQRCode(@Param('Id') Id: string, @Response() res) {
-    return this.Auth2faService.generateQRCode(Id,res) 
-    };
-  
+    return this.Auth2faService.generateQRCode(Id, res);
+  }
 
-   //verifyToken
-   @ApiResponse({
+  //verifyToken
+  @ApiResponse({
     status: 500,
     description: 'Internal-error',
     type: internalError,

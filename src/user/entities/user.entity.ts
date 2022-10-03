@@ -64,7 +64,6 @@ export class UserEntity {
   @Column({
     name: 'Logged',
     type: 'boolean',
-    nullable: true
   })
   Logged = false;
 
@@ -106,7 +105,6 @@ export class UserEntity {
     this.User = user?.User;
     this.Email = user?.Email;
     this.Phone = user?.Phone;
-    this.Logged = user?.Logged;
     this.Password = user?.Password;
     this.AccessToken = user?.AccessToken;
     this.CryptoBalance = user?.CryptoBalance;

@@ -1,4 +1,4 @@
-# Executando aplicação
+# Executando a aplicação
 - Criar Usuário: <br>
 -O usuário deve ser criado junto ao endpoint (Post)/users; <br>
 -Deve-se informar o nome do Usuário(User), um e-mail válido(Email) e também um número de telefone válido, considerando o formato brasileiro(Phone); <br>
@@ -56,3 +56,31 @@
 -"quantityTransafered": {Quantidade a ser transferida entre usuários}
 
 - Funções gerais da aplicação:
+- Endpoint (Get)/users: <br>
+-Obtem todos os usuários da aplicação. (Necessita autenticação com o AccessToken)
+
+- Endpoint (Get)/users{User}: <br>
+-Obtem um usuário da aplicação, passando o mesmo como parâmetro na URL. (Necessita autenticação com o AccessToken)
+
+- Endpoint (Delete)/users: <br>
+-Remove todos os usuários da aplicação. (Necessita autenticação com o AccessToken)
+
+- Endpoint (Delete)/users/{Id}: <br>
+-Remove um usuário da aplicação, passando o mesmo como parâmetro na URL, utilizando sua Id. (Necessita autenticação com o AccessToken)
+
+- Endpoint (Patch)/users/{User}:<br>
+-Atualiza informações de um usuário da aplicação, passando o mesmo como parâmetro na URL. (Necessita autenticação com o AccessToken)<br>
+-Deve ainda ser informado os campos a seguir:<br>
+secret: {};<br>
+token: {};<br>
+Email: {Email o qual deseja identificar o usuário após a atualização(deve ser único)};<br>
+Password: {A senha será atualizada conforme o valor que esse campo for preenchido(retornará criptografada também)};<br>
+-Note que a API permite somente a atualização dos campos Email e Password, sendo User inalterável.
+
+- Endpoint (Patch)/users/login/refresh: <br>
+-O AccessToken possui uma vida útil de apenas 120 segundos, sendo necessário utilizar este endpoint para o atualizar e assim permitir autenticações novamente;<br>
+-O campo AccessToken receberá o valor gerado por este endpoint que agora estará ativo para autenticações;<br>
+-Devem ser informados os seguintes campos:<br>
+secret: <br>
+token: <br>
+oldToken: {AccessToken expirado}

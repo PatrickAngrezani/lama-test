@@ -128,6 +128,7 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Update user'})
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Patch(':User')
   async update(

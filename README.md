@@ -21,9 +21,27 @@
 "Verified: True"
 
 - Adicionar Senha:<br>
--Agora com o campo "Verified: True", é possível configurar uma senha para o usuário<br>
+-Agora com o campo "Verified: True", é possível configurar uma senha para o usuário.;<br>
 -Informando User como parâmetro ao endpoint (Post)/auth2fa/addpassword/{User} e também o campo "Password" com a senha desejada, tal senha será configurada ao usuário, a mesma será retornada de forma criptografada e o campo a seguir sofrerá a seguinte alteração:<br>
 "Password: {Senha criptografada}"
 
-- Obter ACcessToken:<br>
--aushdasuhd
+- Obter AccessToken:<br>
+-Com a senha configurada, será possível obter o "AccessToken" que será útil nos próximos passos.;<br>
+-No endpoint (Post)/users/login, preencha os seguintes campos com as informações referentes ao usuário:<br>
+-secret:"";<br>
+-token:"";<br>
+-User:"";<br>
+-Password:"{Não criptografada}";<br>
+-O campo seguir sofrerá a seguinte alteração:<br>
+"AccessToken: {AccessToken obtido}"
+
+- Obter "Balances":<br>
+-Em posse do "AccessToken", agora o usuário pode obter suas "balances"(Fiat/Cripto).;<br>
+-No endpoint (Post)/balances o usuário deverá preencher o campo "AccessToken" com a respectiva informação.;<br>
+-O sistema irá identificar automaticamente o usuário e os campos a seguir sofreram as seguintes alterações:<br>
+"FiatWallet: {A carteira irá receber um valor aleatório}";<br>
+"CryptoWallet: {A carteira irá receber um valor aleatório}"
+
+- Crypto Transaction:<br>
+
+- Fiat Transaction:

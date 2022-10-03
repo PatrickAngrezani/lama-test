@@ -1,6 +1,6 @@
 import {TransactionDto} from './dto.transactions/transaction.dto';
-import {DataSource} from 'typeorm';
-import {Body, HttpStatus, Injectable, Request, Response} from '@nestjs/common';
+import {Connection, DataSource} from 'typeorm';
+import {Body, Injectable, Request, Response} from '@nestjs/common';
 import {UserEntity} from 'src/user/entities/user.entity';
 import {OnEvent} from '@nestjs/event-emitter';
 import {EventEmitter2} from '@nestjs/event-emitter';

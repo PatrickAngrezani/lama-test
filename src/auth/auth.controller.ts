@@ -34,7 +34,7 @@ export class AuthController {
   @ApiOperation({summary: 'Obtain AccessToken'})
   @UseGuards(AuthGuard('local'))
   @Post('login')
-  async login(@Body() loginDto: loginDto,@Request() req) {
+  async loginJwt(@Body() loginDto: loginDto,@Request() req) {
     return this.AuthService.loginJwt(req.user, loginDto, req);
   }
 

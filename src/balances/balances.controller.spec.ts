@@ -47,9 +47,9 @@ describe('BalancesController', () => {
     });
   });
 
-  //obtainBalances(exception)
-  describe('obtainBalances(exception)', () => {
-    it('should throw an exception when user receives balances', () => {
+  //obtainBalances(Error)
+  describe('obtainBalances(Error)', () => {
+    it('should throw an error when user receives balances', async () => {
       //arrange
       jest.spyOn(balancesService, 'obtainBalances').mockRejectedValueOnce(new Error());
       //assert

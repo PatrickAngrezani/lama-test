@@ -64,6 +64,7 @@ export class UserEntity {
   @Column({
     name: 'Logged',
     type: 'boolean',
+    nullable: true
   })
   Logged = false;
 

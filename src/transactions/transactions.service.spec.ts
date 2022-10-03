@@ -58,7 +58,7 @@ describe('TransactionsService', () => {
     });
   });
 
-  //fiatTransactio
+  //fiatTransaction
   describe('fiatTransaction', () => {
     it('should make a fiat transfer', async () => {
       //act

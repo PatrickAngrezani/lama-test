@@ -4,7 +4,6 @@ import {TransactionsController} from './transactions.controller';
 import {Module} from '@nestjs/common';
 import {TypeOrmModule} from '@nestjs/typeorm';
 import {UserEntity} from 'src/user/entities/user.entity';
-import { DataSource } from 'typeorm';
 
 
 @Module({

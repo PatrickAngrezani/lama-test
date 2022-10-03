@@ -1,10 +1,8 @@
 # Executando aplicação
 - Criar Usuário: <br>
-O usuário deve ser criado junto ao endpoint (Post)/users; <br>
-<br>
-Deve-se informar o nome do Usuário(User), um e-mail válido(Email) e também um número de telefone válido, considerando o formato brasileiro(Phone); <br>
-<br>
-Com isso, o usuário receberá além dos campos informados acima: <br>
+-O usuário deve ser criado junto ao endpoint (Post)/users; <br>
+-Deve-se informar o nome do Usuário(User), um e-mail válido(Email) e também um número de telefone válido, considerando o formato brasileiro(Phone); <br>
+-Com isso, o usuário receberá além dos campos informados acima: <br>
 "QRCode para verificar a existência do usuário;" <br>
 "Verified: false"; <br>
 "Logged: false"; <br>
@@ -15,8 +13,7 @@ Com isso, o usuário receberá além dos campos informados acima: <br>
 "Password: null"<br>
 
 - Gerando QRCode <br>
-Informando a Id do usuário como parâmetro ao endpoint (Get)/auth2fa/qrcode/{Id}, um QRCode será exibido, junto de seu secret, anteriormente enviado através do campo "QRCode" <br>
-<br>
-Ao ler o QRCode junto ao aplicativo de autenticação "Google Authenticator", um token formato por 6 digitos será disponiblizado na tela do dispositivo. <br>
+-Informando a Id do usuário como parâmetro ao endpoint (Get)/auth2fa/qrcode/{Id}, um QRCode será exibido, junto de seu secret, anteriormente enviado através do campo "QRCode" <br>
+-Ao ler o QRCode junto ao aplicativo de autenticação "Google Authenticator", um token formato por 6 digitos será disponiblizado na tela do dispositivo. <br>
 
 - Verficar Token

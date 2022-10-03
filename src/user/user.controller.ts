@@ -1,4 +1,3 @@
-
 import {internalError} from './swagger.user/error/internal-error.swagger';
 import {badRequestSwagger} from './swagger.user/error/bad-request.swagger';
 import {userSwagger} from './swagger.user/user.swagger';
@@ -17,13 +16,12 @@ import {
 import {UserService} from './user.service';
 import {CreateUserDto} from './dto.user/create-user.dto';
 import {UpdateUserDto} from './dto.user/update-user.dto';
-import {ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
+import {ApiBearerAuth, ApiOperation, ApiResponse, ApiTags} from '@nestjs/swagger';
 import {createUserSwagger} from './swagger.user/createUser.swagger';
 import {usersSwagger} from './swagger.user/users.swagger';
 import {updateUserSwagger} from './swagger.user/updateUser.swagger';
 import {notFoundSwagger} from './swagger.user/error/not-found.swagger';
-import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
-
+import {JwtAuthGuard} from 'src/auth/jwt-auth.guard';
 
 
 @Controller('users')
@@ -70,8 +68,8 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get all users'})
-  
-  @Get('get')
+  @ApiBearerAuth()
+  @Get()
   @UseGuards(JwtAuthGuard)
   findAll() {
     return this.userService.findAll();
@@ -97,8 +95,9 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Get an user'})
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Post('get/:User')
+  @Get(':User')
   findOne(@Param('User') User: string) {
     return this.userService.findOne(User);
   }
@@ -153,6 +152,7 @@ export class UserController {
     isArray: true,
   })
   @ApiOperation({summary: 'Remove all users'})
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Delete()
   removeAll() {
@@ -174,8 +174,9 @@ export class UserController {
   })
   @ApiResponse({status: 204, description: 'UserData removed succesfully'})
   @ApiOperation({summary: 'Remove especific user'})
+  @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete('delete/:Id')
+  @Delete(':Id')
   remove(@Param('Id') Id: string) {
     return this.userService.remove(Id);
   }

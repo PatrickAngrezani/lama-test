@@ -13,3 +13,10 @@ Com isso, o usuário receberá além dos campos informados acima: <br>
 "FiatBalance: null"; <br>
 "Id: (Será gerada automaticamente no formato UUID)"<br>
 "Password: null"<br>
+
+- Gerando QRCode <br>
+Informando a Id do usuário como parâmetro ao endpoint (Get)/auth2fa/qrcode/{Id}, um QRCode será exibido, junto de seu secret, anteriormente enviado através do campo "QRCode" <br>
+<br>
+Ao ler o QRCode junto ao aplicativo de autenticação "Google Authenticator", um token formato por 6 digitos será disponiblizado na tela do dispositivo. <br>
+
+- Verficar Token

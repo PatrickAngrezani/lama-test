@@ -13,7 +13,7 @@ import {BalancesService} from './balances.service';
     UserModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: {expiresIn: '300s'},
+      signOptions: {expiresIn: '500s'},
     }),
   ],
   controllers: [BalancesController],

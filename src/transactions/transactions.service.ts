@@ -47,7 +47,7 @@ export class TransactionsService {
     } catch (Error) {
       await queryRunner.rollbackTransaction();
       res.sendStatus(400);
-      return 400;
+      throw 400;
     } finally {
       await queryRunner.release();
     }

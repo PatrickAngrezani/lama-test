@@ -1,5 +1,6 @@
+import { UnauthorizedException } from '@nestjs/common';
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import {Injectable, Body, Response, Request, BadRequestException} from '@nestjs/common';
+import {Injectable, Body, Response, Request, BadRequestException, NotFoundException} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {CreateUserDto} from './dto.user/create-user.dto';
@@ -20,8 +21,12 @@ export class UserService {
   }
 
   //findOne
-  async findOne(User: string): Promise<UserEntity> {
-    return this.repository.findOne({where: {User}});
+  async findOne(User: string): Promise<any > {
+    const user = await this.repository.findOne({where: {User}});
+    if (user) {
+      return user
+    }
+    throw new NotFoundException();
   }
 
   //create
@@ -37,7 +42,7 @@ export class UserService {
     @Response() res,
     @Request() req,
   ) {
-    const user = await this.findOne(User);
+    const user = await this.repository.findOne({where: {User}});
     const tokenVerified = speakeasy.totp.verify({
       secret: req.body.secret,
       encoding: 'base32',
@@ -45,7 +50,7 @@ export class UserService {
       window: 0,
     });
     if (!user) {
-      throw new BadRequestException('User not found');
+      throw new NotFoundException();
     }
     if (tokenVerified && updatedUserDto.Email !== user.Email) {
       const passwordUpdated = req.body.Password;
@@ -59,7 +64,7 @@ export class UserService {
         Password: user.Password,
       });
     }
-    throw new BadRequestException();
+    throw new UnauthorizedException();
   }
 
   //removeAll
@@ -69,8 +74,11 @@ export class UserService {
   }
 
   //removeOne
-  async remove(Id: string) {
-    const user = await this.repository.findOne({where: {Id}});
-    return this.repository.remove(user);
+  async remove(User: string) {
+    const user = await this.repository.findOne({where: {User}});
+    if (user) {
+      this.repository.remove(user)
+    }
+    throw new NotFoundException();
   }
 }

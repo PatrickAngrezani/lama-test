@@ -176,8 +176,8 @@ export class UserController {
   @ApiOperation({summary: 'Remove especific user'})
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
-  @Delete(':Id')
-  remove(@Param('Id') Id: string) {
+  @Delete(':User')
+  remove(@Param('User') Id: string) {
     return this.userService.remove(Id);
   }
 }
